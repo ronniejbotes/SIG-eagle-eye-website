@@ -68,8 +68,8 @@
 }
 .mine-trend__bars {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(12px, 2vw, 24px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(10px, 1.8vw, 22px);
   align-items: end;
   height: 360px;
   padding-bottom: 36px;
@@ -88,6 +88,13 @@
 }
 .mine-trend__bar--goal {
   background: var(--gold-400);
+}
+/* The year so far, and it is already higher than the last full year. */
+.mine-trend__bar--ytd {
+  background: repeating-linear-gradient(135deg, #a3322a 0 7px, #c0564c 7px 14px);
+}
+.mine-trend__bar--ytd .mine-trend__val {
+  color: #a3322a;
 }
 .mine-trend__val {
   position: absolute;

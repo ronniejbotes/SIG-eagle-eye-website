@@ -30,7 +30,7 @@
   <script>document.documentElement.classList.replace('no-js','js');</script>
   <!-- /@include head -->
   <link rel="preload" as="image" href="/assets/img/hero-warehouse-floor-veil-1600.webp" fetchpriority="high">
-  <link rel="stylesheet" href="/assets/css/home.css?v=93a315e5">
+  <link rel="stylesheet" href="/assets/css/home.css?v=c412f18d">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -318,48 +318,6 @@
       </div>
     </div>
 
-    <!-- ============================== THE LATE PROBLEM ============================== -->
-    <section class="late section tone-glass" aria-labelledby="late-title">
-      <div class="container">
-        <div class="late__grid">
-          <div class="late__big" data-reveal>
-            <p class="eyebrow">Why employers need it</p>
-            <p class="late__num" aria-hidden="true"><span data-count="80">80</span><span class="late__pct">%</span></p>
-            <h2 class="late__claim" id="late-title"><span class="visually-hidden">80% </span>of workplace disputes are addressed too late, when the risk is already high.</h2>
-          </div>
-          <div class="late__side">
-            <div class="glass card-pad late__card" data-reveal>
-              <h3 class="h3 late__card-title">Most employers only act after:</h3>
-              <ol class="late__list" role="list" data-stagger>
-                <li><span class="mono">01</span>Misconduct has escalated</li>
-                <li><span class="mono">02</span>Evidence is insufficient</li>
-                <li><span class="mono">03</span>Procedures were mishandled</li>
-                <li><span class="mono">04</span>Productivity has declined</li>
-                <li><span class="mono">05</span>Safety breaches have occurred</li>
-              </ol>
-            </div>
-            <p class="late__shift" data-reveal>SIG Eagle Eye shifts the model from <span class="late__strike">reactive dispute management</span> to <strong>proactive risk control.</strong></p>
-          </div>
-        </div>
-
-        <div class="late__stats" data-stagger>
-          <div class="late__stat">
-            <p class="stat__num"><span data-count="193069" data-format="thousands">193,069</span></p>
-            <p class="stat__label">disputes referred to the CCMA in the 2024/25 financial year</p>
-          </div>
-          <div class="late__stat">
-            <p class="stat__num"><span data-count="51">51</span><em>%</em></p>
-            <p class="stat__label">of those referrals were unfair dismissal claims</p>
-          </div>
-          <div class="late__stat">
-            <p class="stat__num"><span data-count="12">12</span><em> months</em></p>
-            <p class="stat__label">maximum compensation for an unfair dismissal under section 194 of the LRA, before legal costs</p>
-          </div>
-        </div>
-        <p class="source">Sources: CCMA 2024/25 annual report figures as reported by <a href="https://www.businessday.co.za/news/2026-09-23-unfair-dismissals-make-up-more-than-half-of-ccma-cases/" rel="noopener" target="_blank">Business Day</a>; Labour Relations Act 66 of 1995, s194 (up to 24 months where a dismissal is automatically unfair).</p>
-      </div>
-    </section>
-
     <!-- ============================== ESCALATION (pinned) ============================== -->
     <section class="escalation tone-dark" data-escalation aria-labelledby="esc-title">
       <div class="hud-grid" aria-hidden="true"></div>
@@ -439,26 +397,139 @@
                 <path class="curve__late" data-curve-late-b pathLength="1" d="M300 500 C 380 470, 450 420, 530 350 S 760 150, 940 78"/>
                 <path class="curve__ee" data-curve-ee-a pathLength="1" d="M300 500 C 330 494, 350 486, 372 484" stroke="url(#eeLine)"/>
                 <path class="curve__ee" data-curve-ee-b pathLength="1" d="M372 484 C 400 482, 420 500, 460 506 S 700 516, 940 516" stroke="url(#eeLine)"/>
-                <g class="curve__node curve__node--sky" data-curve-node transform="translate(300 500)">
-                  <circle r="22" class="curve__pulse"/>
-                  <circle r="9"/>
-                  <g transform="translate(-16 -58)"><rect x="-8" y="-26" width="126" height="36" rx="18"/><text x="10" y="-2">Flagged</text></g>
+                <!-- Position lives on the outer group; motion.js only animates the inner one. -->
+                <g transform="translate(300 500)">
+                  <g class="curve__node curve__node--sky" data-curve-node>
+                    <circle r="22" class="curve__pulse"/>
+                    <circle r="9"/>
+                    <g transform="translate(-16 -58)"><rect x="-8" y="-26" width="126" height="36" rx="18"/><text x="10" y="-2">Flagged</text></g>
+                  </g>
                 </g>
-                <g class="curve__node curve__node--gold" data-curve-node transform="translate(372 484)">
-                  <circle r="22" class="curve__pulse"/>
-                  <circle r="9"/>
-                  <g transform="translate(20 -64)"><rect x="-8" y="-26" width="196" height="36" rx="18"/><text x="10" y="-2">Human review</text></g>
+                <g transform="translate(372 484)">
+                  <g class="curve__node curve__node--gold" data-curve-node>
+                    <circle r="22" class="curve__pulse"/>
+                    <circle r="9"/>
+                    <g transform="translate(20 -64)"><rect x="-8" y="-26" width="196" height="36" rx="18"/><text x="10" y="-2">Human review</text></g>
+                  </g>
                 </g>
-                <g class="curve__marker" data-curve-marker transform="translate(800 125)">
-                  <line y1="0" y2="415" stroke-dasharray="4 8"/>
-                  <circle r="8"/>
-                  <g transform="translate(-300 -66)"><rect width="286" height="44" rx="22"/><text x="20" y="29">Most employers act here</text></g>
+                <g transform="translate(800 125)">
+                  <g class="curve__marker" data-curve-marker>
+                    <line y1="0" y2="415" stroke-dasharray="4 8"/>
+                    <circle r="8"/>
+                    <g transform="translate(-300 -66)"><rect width="286" height="44" rx="22"/><text x="20" y="29">Most employers act here</text></g>
+                  </g>
                 </g>
               </svg>
               <figcaption class="escalation__closing">Early and fair beats <span class="serif serif--inline">late and expensive.</span></figcaption>
             </figure>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ============================== THE LATE PROBLEM ============================== -->
+    <section class="late section tone-glass" aria-labelledby="late-title">
+      <div class="container">
+        <div class="late__grid">
+          <div class="late__big" data-reveal>
+            <p class="eyebrow">Why employers need it</p>
+            <p class="late__num" aria-hidden="true"><span data-count="80">80</span><span class="late__pct">%</span></p>
+            <h2 class="late__claim" id="late-title"><span class="visually-hidden">80% </span>of workplace disputes are addressed too late, when the risk is already high.</h2>
+          </div>
+          <div class="late__side">
+            <div class="glass card-pad late__card" data-reveal>
+              <h3 class="h3 late__card-title">Most employers only act after:</h3>
+              <ol class="late__list" role="list" data-stagger>
+                <li><span class="mono">01</span>Misconduct has escalated</li>
+                <li><span class="mono">02</span>Evidence is insufficient</li>
+                <li><span class="mono">03</span>Procedures were mishandled</li>
+                <li><span class="mono">04</span>Productivity has declined</li>
+                <li><span class="mono">05</span>Safety breaches have occurred</li>
+              </ol>
+            </div>
+            <p class="late__shift" data-reveal>SIG Eagle Eye shifts the model from <span class="late__strike">reactive dispute management</span> to <strong>proactive risk control.</strong></p>
+          </div>
+        </div>
+
+        <div class="late__stats" data-stagger>
+          <div class="late__stat">
+            <p class="stat__num"><span data-count="193069" data-format="thousands">193,069</span></p>
+            <p class="stat__label">disputes referred to the CCMA in the 2024/25 financial year</p>
+          </div>
+          <div class="late__stat">
+            <p class="stat__num"><span data-count="51">51</span><em>%</em></p>
+            <p class="stat__label">of those referrals were unfair dismissal claims</p>
+          </div>
+          <div class="late__stat">
+            <p class="stat__num"><span data-count="12">12</span><em> months</em></p>
+            <p class="stat__label">maximum compensation for an unfair dismissal under section 194 of the LRA, before legal costs</p>
+          </div>
+        </div>
+        <p class="source">Sources: CCMA 2024/25 annual report figures as reported by <a href="https://www.businessday.co.za/news/2026-09-23-unfair-dismissals-make-up-more-than-half-of-ccma-cases/" rel="noopener" target="_blank">Business Day</a>; Labour Relations Act 66 of 1995, s194 (up to 24 months where a dismissal is automatically unfair).</p>
+      </div>
+    </section>
+
+    <!-- ============================== THE RECORD (industry by industry) ============================== -->
+    <section class="record section tone-dark" id="the-record" aria-labelledby="rec-title">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <p class="eyebrow">The record, industry by industry</p>
+            <h2 class="h2 section-head__title" id="rec-title" data-split>Where disputes start. <span class="serif">Why employers lose.</span></h2>
+          </div>
+          <p class="lede section-head__text">The CCMA publishes how many disputes each industry brings, but not who wins them. This is the closest honest picture: the caseload in each industry, and the most recent case an employer lost.</p>
+        </div>
+
+        <div class="rtable-wrap" data-reveal>
+          <table class="rtable" role="table">
+            <caption class="visually-hidden">Disputes a year, and the most recent case an employer lost, by industry</caption>
+            <thead class="rtable__head" role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">Industry</th>
+                <th scope="col" role="columnheader">Cases a year, 2024/25</th>
+                <th scope="col" role="columnheader">Latest case an employer lost</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              <tr role="row">
+                <th scope="row" role="rowheader"><a class="rtable__ind" href="/industries/security-operations/#in-the-courts">Private security</a></th>
+                <td role="cell"><span class="rtable__num">13%</span><span class="rtable__bar" style="--v: 1" aria-hidden="true"></span><span class="rtable__note">of all CCMA cases, about 25,000</span></td>
+                <td role="cell"><span class="rtable__when mono">Aug 2024 · Labour Court</span>An escort driver dismissed over a crash was reinstated with back pay. <strong>The footage showed he had probably hit standing water.</strong></td>
+              </tr>
+              <tr role="row">
+                <th scope="row" role="rowheader"><a class="rtable__ind" href="/industries/retail-warehousing/#in-the-courts">Retail</a></th>
+                <td role="cell"><span class="rtable__num">13%</span><span class="rtable__bar" style="--v: 1" aria-hidden="true"></span><span class="rtable__note">of all CCMA cases, about 25,000</span></td>
+                <td role="cell"><span class="rtable__when mono">Feb 2026 · Labour Court</span>A 16-year employee was reinstated with back pay. <strong>CCTV showed &ldquo;suspicious&rdquo; behaviour, but nothing being taken.</strong></td>
+              </tr>
+              <tr role="row">
+                <th scope="row" role="rowheader"><a class="rtable__ind" href="/industries/logistics-fleet/#in-the-courts">Transport &amp; fleet</a></th>
+                <td role="cell"><span class="rtable__num">4%</span><span class="rtable__bar" style="--v: 0.31" aria-hidden="true"></span><span class="rtable__note">of all CCMA cases, about 8,000</span></td>
+                <td role="cell"><span class="rtable__when mono">Dec 2025 · Labour Court</span>A car-rental supervisor dismissed for using a company car without approval was reinstated. <strong>The rule had been blurred in practice.</strong></td>
+              </tr>
+              <tr role="row">
+                <th scope="row" role="rowheader"><a class="rtable__ind" href="/industries/mining-earthmoving/#in-the-courts">Mining</a></th>
+                <td role="cell"><span class="rtable__num">4%</span><span class="rtable__bar" style="--v: 0.31" aria-hidden="true"></span><span class="rtable__note">of all CCMA cases, about 8,000</span></td>
+                <td role="cell"><span class="rtable__when mono">Jul 2026 · Labour Court</span>Nine workers at a gold mine's tailings plant were reinstated with back pay, nearly seven years after their dismissal. <strong>The CCTV hard drives had been stolen in a hijacking.</strong></td>
+              </tr>
+              <tr role="row">
+                <th scope="row" role="rowheader"><a class="rtable__ind" href="/industries/manufacturing/#in-the-courts">Manufacturing</a></th>
+                <td role="cell"><span class="rtable__num rtable__num--muted">Not listed</span><span class="rtable__note">outside the CCMA's eight biggest sectors</span></td>
+                <td role="cell"><span class="rtable__when mono">Reported 2026 · Labour Court</span>A tyre maker's three dismissed shop stewards kept their reinstatement, with 21 months' back pay. <strong>The main evidence was one grainy photo.</strong></td>
+              </tr>
+              <tr role="row">
+                <th scope="row" role="rowheader"><a class="rtable__ind" href="/industries/healthcare/#in-the-council">Healthcare <span class="rtable__sub">public sector</span></a></th>
+                <td role="cell"><span class="rtable__num">1,113</span><span class="rtable__note">disputes at its own bargaining council</span></td>
+                <td role="cell"><span class="rtable__when mono">2024/25 · Bargaining council</span>The one sector council that publishes who wins. <strong>49 of its 215 arbitration awards went against the employer.</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="record__foot">
+          <p class="record__why"><strong>Why no loss count for every industry?</strong> The CCMA publishes only how many disputes each sector refers, and most bargaining councils publish nothing at all. Public health's council is the exception, so its row uses its own figures. Security and road freight also have councils that hear dismissal cases, so their real caseloads are higher.</p>
+          <a class="link-arrow record__more" href="/industries/">The cases, industry by industry <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+        </div>
+        <p class="source">Sources: <a href="https://www.ccma.org.za/wp-content/uploads/2025/10/CCMA-AR-2024-25.pdf" target="_blank" rel="noopener">CCMA Annual Report 2024/25</a>, Figure 5; <a href="https://www.phsdsbc.org.za/wp-content/uploads/2025/12/Annual-Report-2025-V6.pdf" target="_blank" rel="noopener">PHSDSBC Annual Report 2024/25</a>; judgments <a href="https://www.saflii.org/za/cases/ZALCD/2024/26.html" target="_blank" rel="noopener">[2024] ZALCD 26</a>, <a href="https://www.saflii.org/za/cases/ZALCJHB/2026/50.html" target="_blank" rel="noopener">[2026] ZALCJHB 50</a>, <a href="https://www.saflii.org/za/cases/ZALCJHB/2025/587.html" target="_blank" rel="noopener">[2025] ZALCJHB 587</a>, <a href="https://www.saflii.org/za/cases/ZALCJHB/2026/215.html" target="_blank" rel="noopener">[2026] ZALCJHB 215</a> and <a href="https://www.derebus.org.za/employment-law-update-july-2026/" target="_blank" rel="noopener">[2026] 5 BLLR 495 (LC)</a>. Case summaries are general information, not legal advice.</p>
       </div>
     </section>
 
@@ -1058,7 +1129,7 @@
   <script src="/assets/js/vendor/ScrollTrigger.min.js?v=5445d0e9" defer></script>
   <script src="/assets/js/vendor/SplitText.min.js?v=8b363297" defer></script>
   <script src="/assets/js/vendor/lenis.min.js?v=e4bb975a" defer></script>
-  <script src="/assets/js/site.js?v=9adb1eb1" defer></script>
-  <script src="/assets/js/motion.js?v=26be0b50" defer></script>
+  <script src="/assets/js/site.js?v=8d512f2e" defer></script>
+  <script src="/assets/js/motion.js?v=8b17f9ed" defer></script>
 </body>
 </html>

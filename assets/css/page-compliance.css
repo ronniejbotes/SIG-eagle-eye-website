@@ -173,7 +173,7 @@
 }
 @media (min-width: 1000px) {
   .ccma__grid {
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    grid-template-columns: minmax(0, 1.28fr) minmax(0, 0.72fr);
     gap: 48px;
   }
   .ccma__card {
@@ -446,4 +446,117 @@
   margin: clamp(48px, 6vw, 72px) 0 0;
   padding-top: 20px;
   border-top: 1px solid var(--line);
+}
+
+/* ---------- What a lost case costs: the clock that starts at dismissal ---------- */
+.cost {
+  --lost: #a3322a;
+}
+.cost__steps {
+  position: relative;
+  display: grid;
+  gap: 24px;
+  padding-left: 32px;
+}
+.cost__steps::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--royal), var(--gold-400) 72%, var(--lost));
+}
+.cost__steps li {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+}
+.cost__steps li::before {
+  content: '';
+  position: absolute;
+  left: -32px;
+  top: 7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--royal);
+  background: var(--frost);
+}
+.cost__steps li.is-late::before {
+  border-color: var(--lost);
+  background: var(--lost);
+}
+.cost__t {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--navy);
+}
+.cost__steps .is-late .cost__t {
+  color: var(--lost);
+}
+.cost__steps strong {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+.cost__steps li > span:last-child {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink-72);
+}
+@media (min-width: 900px) {
+  .cost__steps {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0 24px;
+    padding: 36px 0 0;
+  }
+  .cost__steps::before {
+    left: 7px;
+    right: 0;
+    top: 6px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--royal), var(--gold-400) 72%, var(--lost));
+  }
+  .cost__steps li::before {
+    left: 0;
+    top: -36px;
+  }
+}
+.cost__bill {
+  display: grid;
+  gap: 18px;
+  margin-top: clamp(30px, 3.6vw, 44px);
+  padding-top: 28px;
+  border-top: 1px solid var(--line-strong);
+}
+@media (min-width: 900px) {
+  .cost__bill {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 36px;
+  }
+}
+.cost__bill p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-72);
+}
+.cost__bill strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.02rem;
+  color: var(--ink);
+}
+.cost .source {
+  margin-top: 26px;
 }

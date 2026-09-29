@@ -55,6 +55,16 @@ Social share images (`assets/img/og/`) are drawn from the site's own photos and 
 python3 tools/og.py
 ```
 
+## Statistics and court cases
+
+The homepage table "The record, industry by industry" (`#the-record`), the "In the courts" sections on the industry pages, the healthcare page's council figures (`#in-the-council`), the compliance page's cost timeline (`#cost`) and the FAQ answer on CCMA outcomes use these sources. Every figure is cited on the page next to it.
+
+- **Cases a year, by industry**: CCMA Annual Report 2024/25, Figure 5 (the CCMA only publishes its eight biggest sectors). The CCMA usually publishes its next annual report in October, so refresh the table and the cost timeline when the 2025/26 report is out.
+- **Who wins**: nobody publishes employer win or loss counts by industry. The CCMA's reports stopped at volumes, and the road freight, private security and metal industry councils publish none. The Public Health and Social Development Sectoral Bargaining Council is the exception (Annual Report 2024/25: 49 of 215 awards against the employer). The last national split is for 2011/12 (ILO Working Paper 47, 2013). Don't use the unsourced "63% of cases go to employees" figure that circulates online.
+- **Latest employer losses in the table**: [2024] ZALCD 26 (security), [2026] ZALCJHB 50 (retail), [2025] ZALCJHB 587 (vehicle rental), [2026] ZALCJHB 215 (mining services) and [2026] 5 BLLR 495 (LC), a tyre maker. Check for newer judgments when you refresh the table.
+- **Court cases**: summarised from the judgments on SAFLII and, where noted, GroundUp, IOL and De Rebus reports. Employer names are kept out of the copy; each case links to its judgment or report.
+- **Other figures**: PSIRA Annual Report 2024/25 (security officers), RTMC State of Road Safety Report 2024 (crash factors), IRJEMS 4(4), April 2025 (Mangaung retail survey), and the Sunday Times, September 2026 (2026 mine deaths to 14 September).
+
 ## The contact form
 
 The form on `/contact/` validates in the browser and then does one of two things:
@@ -73,7 +83,7 @@ Upload everything **except** `tools/`, `.git/` and `README.md` to the web root (
 - [ ] Confirm the domain and email (currently `https://www.sigeagleeye.co.za` and `info@sigeagleeye.co.za`) and run the `--set-domain` / `--set-email` commands if they differ.
 - [ ] Add the registered company name, registration number and physical address to `/privacy-policy/`, and name the Information Officer.
 - [ ] Set the contact form endpoint (see above).
-- [ ] Have the legal copy on `/compliance/`, `/for-employees/` and `/faq/` checked by the SIG labour law team. It reflects the law as at September 2026 and is written as general information.
+- [ ] Have the legal copy on `/compliance/`, `/for-employees/` and `/faq/`, and the court case summaries on the homepage and industry pages, checked by the SIG labour law team. It reflects the law as at September 2026 and is written as general information.
 - [ ] Submit `sitemap.xml` in Google Search Console.
 
 ## Image sources

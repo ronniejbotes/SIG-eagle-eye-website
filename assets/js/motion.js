@@ -141,7 +141,8 @@
     });
   }
 
-  /* Escalation curve: pinned stage, the two paths draw as you scroll. */
+  /* Escalation curve: on wide screens a pinned stage draws as you scroll; on
+     phones the chart plays through once it is in view. */
   function initEscalation(gsap, ScrollTrigger) {
     const section = document.querySelector('[data-escalation]');
     if (!section) return;
@@ -158,25 +159,28 @@
     const marker = q('[data-curve-marker]');
     const all = [lateA, lateB, eeA, eeB, ...nodes, ...gap, marker, ...steps];
 
-    const build = (scrollTrigger) => {
+    // dimSteps: the steps light up in turn beside the chart (pinned layout only).
+    const build = (scrollTrigger, { dimSteps = true, ease = 'none' } = {}) => {
       gsap.set([lateA, lateB, eeA, eeB], { strokeDashoffset: 1 });
       gsap.set(nodes, { opacity: 0, scale: 0.3, transformOrigin: '50% 50%' });
       gsap.set(gap, { opacity: 0 });
       gsap.set(marker, { opacity: 0, y: 24 });
-      gsap.set(steps, { opacity: 0.28 });
-      const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger });
-      tl.to(steps[0], { opacity: 1, duration: 0.3 }, 0)
-        .to(lateA, { strokeDashoffset: 0, duration: 0.9 }, 0)
-        .to(steps[0], { opacity: 0.5, duration: 0.3 }, 1)
-        .to(steps[1], { opacity: 1, duration: 0.3 }, 1)
-        .to(nodes[0], { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.2)' }, 1.05)
-        .to(steps[1], { opacity: 0.5, duration: 0.3 }, 2)
-        .to(steps[2], { opacity: 1, duration: 0.3 }, 2)
-        .to(eeA, { strokeDashoffset: 0, duration: 0.5 }, 2)
-        .to(nodes[1], { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.2)' }, 2.4)
-        .to(steps[2], { opacity: 0.5, duration: 0.3 }, 3)
-        .to(steps[3], { opacity: 1, duration: 0.3 }, 3)
-        .to(eeB, { strokeDashoffset: 0, duration: 1 }, 3)
+      if (dimSteps) gsap.set(steps, { opacity: 0.28 });
+      const tl = gsap.timeline({ defaults: { ease }, scrollTrigger });
+      const light = (i, at) => {
+        if (!dimSteps) return;
+        if (i > 0) tl.to(steps[i - 1], { opacity: 0.5, duration: 0.3 }, at);
+        tl.to(steps[i], { opacity: 1, duration: 0.3 }, at);
+      };
+      light(0, 0);
+      tl.to(lateA, { strokeDashoffset: 0, duration: 0.9 }, 0);
+      light(1, 1);
+      tl.to(nodes[0], { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.2)' }, 1.05);
+      light(2, 2);
+      tl.to(eeA, { strokeDashoffset: 0, duration: 0.5 }, 2)
+        .to(nodes[1], { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.2)' }, 2.4);
+      light(3, 3);
+      tl.to(eeB, { strokeDashoffset: 0, duration: 1 }, 3)
         .to(lateB, { strokeDashoffset: 0, duration: 1 }, 3)
         .to(marker, { opacity: 1, y: 0, duration: 0.4 }, 3.55)
         .to(gap, { opacity: 1, duration: 0.5 }, 3.75)
@@ -194,8 +198,13 @@
         gsap.set(all, { clearProps: 'all' });
       };
     });
+    // Stacked layout: the steps sit above the chart, so they stay fully readable,
+    // and the chart plays through once it is in view rather than waiting on the scroll.
     mm.add('(max-width: 999px), (max-height: 679px)', () => {
-      build({ trigger: figure, start: 'top 82%', end: 'bottom 40%', scrub: 0.6 });
+      build(
+        { trigger: figure, start: 'top 70%', toggleActions: 'play none none none' },
+        { dimSteps: false, ease: 'power1.inOut' }
+      ).timeScale(1.5);
       return () => gsap.set(all, { clearProps: 'all' });
     });
   }
@@ -336,27 +345,35 @@
     });
   }
 
+  /* Reveals state both ends explicitly. A from() tween re-reads the resting
+     position when ScrollTrigger refreshes, and on cards with a CSS transform
+     transition (hover lifts) it read the transition mid-flight and left them
+     44px low, overlapping whatever came next. The resting opacity is read once
+     here, before anything moves, and the inline transform is cleared at the
+     end so CSS hover transforms work again. */
   function initReveals(gsap, root) {
     const skip = (el) => Boolean(el.closest('[data-hero], [data-stack-panel]'));
+    const reveal = (targets, distance, vars) => {
+      const rest = targets.map((el) => parseFloat(getComputedStyle(el).opacity) || 1);
+      gsap.fromTo(
+        targets,
+        { y: distance, opacity: 0 },
+        { y: 0, opacity: (i) => rest[i], ease: 'power3.out', clearProps: 'transform', ...vars }
+      );
+    };
     root.querySelectorAll('[data-reveal]').forEach((el) => {
       if (skip(el) || el.dataset.revealed) return;
       el.dataset.revealed = 'true';
-      gsap.from(el, {
-        y: 40,
-        opacity: 0,
+      reveal([el], 40, {
         duration: 1,
-        ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' },
       });
     });
     root.querySelectorAll('[data-stagger]').forEach((group) => {
       if (skip(group) || group.dataset.revealed) return;
       group.dataset.revealed = 'true';
-      gsap.from(group.children, {
-        y: 44,
-        opacity: 0,
+      reveal(Array.from(group.children), 44, {
         duration: 0.85,
-        ease: 'power3.out',
         stagger: 0.08,
         scrollTrigger: { trigger: group, start: 'top 86%', toggleActions: 'play none none reverse' },
       });

@@ -509,6 +509,199 @@
   margin-top: 28px;
 }
 
+/* ============================== THE RECORD ============================== */
+/* A small table: the caseload in each industry, and the latest case an employer lost. */
+.rtable-wrap {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 44px 90px -50px rgba(0, 0, 0, 0.9);
+}
+.rtable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.rtable th,
+.rtable td {
+  vertical-align: top;
+}
+.rtable__head th {
+  padding: 16px 24px;
+  background: #f4eddd;
+  border-bottom: 1px solid rgba(154, 110, 36, 0.24);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+.rtable tbody tr {
+  transition: background-color 200ms var(--ease);
+}
+.rtable tbody tr + tr {
+  border-top: 1px solid var(--line);
+}
+.rtable tbody tr:hover {
+  background: rgba(36, 102, 174, 0.04);
+}
+.rtable tbody th,
+.rtable tbody td {
+  padding: 22px 24px;
+}
+.rtable tbody th {
+  width: 21%;
+}
+.rtable tbody td:nth-child(2) {
+  width: 24%;
+}
+.rtable__ind {
+  font-weight: 800;
+  font-size: 1.02rem;
+  line-height: 1.3;
+  color: var(--navy);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat;
+  transition: background-size 250ms var(--ease);
+}
+.rtable__ind:hover,
+.rtable__ind:focus-visible {
+  background-size: 100% 1.5px;
+}
+.rtable__sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-72);
+}
+.rtable__num {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--royal);
+}
+.rtable__num--muted {
+  padding-top: 6px;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+  color: var(--ink-72);
+}
+.rtable__bar {
+  display: block;
+  width: calc(var(--v) * 120px);
+  height: 6px;
+  margin: 10px 0 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--royal), var(--sky));
+}
+.rtable__note {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: var(--ink-72);
+}
+.rtable__bar + .rtable__note {
+  margin-top: 0;
+}
+.rtable td:last-child {
+  font-size: 0.96rem;
+  line-height: 1.55;
+  color: var(--ink-72);
+}
+.rtable td:last-child strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+.rtable__when {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+/* Narrow screens: each row becomes a card. The table roles in the markup keep
+   the table semantics that the display change would otherwise drop. */
+@media (max-width: 759px) {
+  .rtable,
+  .rtable tbody,
+  .rtable tr,
+  .rtable th,
+  .rtable td {
+    display: block;
+    width: auto !important;
+  }
+  .rtable__head {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .rtable tbody tr {
+    padding: 20px;
+  }
+  .rtable tbody th,
+  .rtable tbody td {
+    padding: 0;
+  }
+  .rtable tbody td:nth-child(2) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+    margin: 10px 0 14px;
+  }
+  .rtable__bar {
+    margin: 0;
+  }
+  .rtable__note {
+    flex-basis: 100%;
+    margin-top: 0;
+  }
+  .rtable__num--muted {
+    padding-top: 0;
+  }
+}
+.record__foot {
+  display: grid;
+  gap: 18px;
+  margin-top: 26px;
+}
+@media (min-width: 900px) {
+  .record__foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 48px;
+  }
+}
+.record__why {
+  max-width: 62em;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+}
+.record__why strong {
+  color: #fff;
+}
+.record__more {
+  justify-self: start;
+  color: #fff;
+}
+.record .source {
+  margin-top: 18px;
+}
+
 /* ============================== ESCALATION ============================== */
 .escalation {
   overflow: clip;
@@ -604,6 +797,15 @@
   font-size: 17px;
   font-weight: 600;
   text-anchor: middle;
+}
+/* Phones: the chart renders at under half size, so its axis text scales up to stay legible. */
+@media (max-width: 600px) {
+  .curve__ticks text {
+    font-size: 26px;
+  }
+  .curve__axis-label {
+    font-size: 22px;
+  }
 }
 .curve__late {
   fill: none;

@@ -253,6 +253,10 @@
 .lawcard .source {
   color: rgba(255, 255, 255, 0.55);
 }
+.lawcard p a {
+  color: #fff;
+  text-underline-offset: 3px;
+}
 
 /* ---------- Big stat band ---------- */
 .statband {
@@ -506,3 +510,172 @@
   text-transform: uppercase;
   color: var(--ink-56);
 }
+
+/* ---------- In the courts: real judgments, laid out as paper files on the dark ---------- */
+.courts {
+  --lost: #a3322a;
+  --file: #f4eddd;
+}
+.courts__list {
+  display: grid;
+  gap: 22px;
+  align-items: stretch;
+}
+@media (min-width: 760px) {
+  .courts__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1120px) {
+  .courts__list--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.court {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2.4vw, 32px);
+  border-radius: 6px 22px 22px 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 42%),
+    var(--file);
+  color: var(--ink);
+  box-shadow: 0 34px 70px -40px rgba(0, 0, 0, 0.85);
+}
+.court__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 70px;
+}
+.court__meta {
+  margin: 6px 0 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-72);
+}
+.court__title {
+  margin: 16px 0 18px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.55rem, 2.3vw, 2rem);
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  text-wrap: balance;
+}
+.court__facts {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+.court__facts dt {
+  margin: 0 0 4px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+.court__facts dd {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.58;
+}
+.court__ee {
+  margin-top: 4px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--royal);
+  border-radius: 0 12px 12px 0;
+  background: rgba(255, 255, 255, 0.62);
+}
+.court__ee dt {
+  color: var(--royal-700);
+}
+.court__cite {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 0.74rem;
+  color: var(--royal-700);
+  text-underline-offset: 2px;
+}
+/* The court's stamp: who, what, and sometimes at which stage. */
+.court__stamp {
+  display: inline-grid;
+  flex: none;
+  justify-items: center;
+  gap: 2px;
+  min-width: 96px;
+  margin: 0;
+  padding: 8px 10px 7px;
+  border: 3px double currentColor;
+  border-radius: 9px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-5deg);
+}
+.court__stamp span {
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+}
+.court__stamp span:nth-child(2) {
+  font-size: 0.96rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+.court__stamp--lost {
+  color: var(--lost);
+}
+.court__stamp--won {
+  color: var(--royal-700);
+}
+.court__stamp--cleared {
+  color: var(--gold-700);
+}
+.court__stamp--open {
+  color: var(--ink-72);
+}
+.courts__foot {
+  display: grid;
+  gap: 22px;
+  margin-top: clamp(32px, 4vw, 52px);
+}
+@media (min-width: 900px) {
+  .courts__foot {
+    grid-template-columns: minmax(0, 1.4fr) auto;
+    align-items: end;
+    gap: 48px;
+  }
+}
+.courts__lesson {
+  margin: 0;
+  padding-left: 22px;
+  border-left: 3px solid var(--gold-300);
+  font-size: clamp(1.1rem, 1.6vw, 1.32rem);
+  font-weight: 600;
+  line-height: 1.5;
+}
+.courts__lesson .mono {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.courts__more {
+  justify-self: start;
+  color: #fff;
+}
+.courts .source {
+  margin-top: 26px;
+}
+

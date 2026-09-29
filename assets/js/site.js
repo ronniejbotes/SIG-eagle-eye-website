@@ -187,8 +187,9 @@
   function initLens() {
     const lens = $('[data-lens]');
     const frame = $('[data-hero-frame]');
-    if (!lens || !frame) return;
-    const state = { x: 0.7, y: 0.46, tx: 0.7, ty: 0.46, active: false, lastMove: 0, t: 0, visible: true };
+    const hero = $('[data-hero]');
+    if (!lens || !frame || !hero) return;
+    const state = { x: 0.7, y: 0.46, tx: 0.7, ty: 0.46, pointer: null, leftAt: 0, t: 0, visible: true };
     const apply = () => {
       lens.style.setProperty('--x', `${(state.x * 100).toFixed(2)}%`);
       lens.style.setProperty('--y', `${(state.y * 100).toFixed(2)}%`);
@@ -197,42 +198,42 @@
       apply();
       return;
     }
-    frame.addEventListener(
+    // Listen on the whole hero, not just the footage: the headline, the status
+    // bar and the incident register (invisible until you scroll) all sit above
+    // the footage, and the lens has to follow the cursor over every one of them.
+    hero.addEventListener(
       'pointermove',
       (e) => {
         if (e.pointerType !== 'mouse') return;
-        const r = frame.getBoundingClientRect();
-        state.tx = (e.clientX - r.left) / r.width;
-        state.ty = (e.clientY - r.top) / r.height;
-        state.lastMove = performance.now();
-        state.active = true;
+        state.pointer = { x: e.clientX, y: e.clientY };
       },
       { passive: true }
     );
-    // The content layer sits above the frame; listen there too.
-    const content = $('[data-hero-content]');
-    if (content) {
-      content.addEventListener(
-        'pointermove',
-        (e) => {
-          if (e.pointerType !== 'mouse') return;
-          const r = frame.getBoundingClientRect();
-          state.tx = (e.clientX - r.left) / r.width;
-          state.ty = (e.clientY - r.top) / r.height;
-          state.lastMove = performance.now();
-          state.active = true;
-        },
-        { passive: true }
-      );
-    }
+    hero.addEventListener('pointerleave', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      state.pointer = null;
+      state.leftAt = performance.now();
+    });
     const io = new IntersectionObserver(([entry]) => (state.visible = entry.isIntersecting));
     io.observe(frame);
     const loop = (now) => {
       requestAnimationFrame(loop);
       if (!state.visible || document.hidden) return;
-      const idle = !state.active || now - state.lastMove > 3200;
-      if (idle) {
-        // Slow drift across the working floor, like a camera sweeping.
+      let following = false;
+      if (state.pointer) {
+        // Measured every frame, so the lens stays under a resting cursor even
+        // while the footage shrinks and slides as the page scrolls.
+        const r = frame.getBoundingClientRect();
+        const px = (state.pointer.x - r.left) / r.width;
+        const py = (state.pointer.y - r.top) / r.height;
+        if (px >= 0 && px <= 1 && py >= 0 && py <= 1) {
+          state.tx = px;
+          state.ty = py;
+          following = true;
+        }
+      }
+      if (!following && now - state.leftAt > 1200) {
+        // Nobody pointing at the footage: a slow drift across the floor, like a camera sweeping.
         state.t += 0.0042;
         const wide = finePointer.matches;
         state.tx = (wide ? 0.66 : 0.55) + Math.sin(state.t) * (wide ? 0.2 : 0.22);

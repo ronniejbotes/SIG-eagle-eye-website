@@ -587,10 +587,15 @@
   font-variant-numeric: tabular-nums;
   color: var(--royal);
 }
-.rtable__num--muted {
-  padding-top: 6px;
-  font-size: 1.05rem;
-  letter-spacing: 0;
+/* "Up to": a ceiling, not a published figure. */
+.rtable__qual {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--ink-72);
 }
 .rtable__bar {
@@ -600,6 +605,9 @@
   margin: 10px 0 8px;
   border-radius: 99px;
   background: linear-gradient(90deg, var(--royal), var(--sky));
+}
+.rtable__bar--max {
+  background: repeating-linear-gradient(90deg, var(--royal) 0 6px, transparent 6px 9px);
 }
 .rtable__note {
   display: block;
@@ -668,8 +676,9 @@
     flex-basis: 100%;
     margin-top: 0;
   }
-  .rtable__num--muted {
-    padding-top: 0;
+  .rtable__qual {
+    display: inline;
+    margin: 0 6px 0 0;
   }
 }
 .record__foot {

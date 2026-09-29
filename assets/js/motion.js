@@ -81,16 +81,18 @@
     const flow = hero.querySelectorAll('.hud__flow, .hud__label');
     const scrim = hero.querySelector('.hero__scrim');
 
-    gsap.from(boxes, {
-      opacity: 0,
-      scale: 0.86,
-      transformOrigin: '50% 50%',
-      duration: 0.8,
-      ease: 'power3.out',
-      stagger: 0.18,
-      delay: 0.6,
-    });
-    gsap.from(flow, { opacity: 0, duration: 1.2, delay: 1.2 });
+    if (boxes.length) {
+      gsap.from(boxes, {
+        opacity: 0,
+        scale: 0.86,
+        transformOrigin: '50% 50%',
+        duration: 0.8,
+        ease: 'power3.out',
+        stagger: 0.18,
+        delay: 0.6,
+      });
+    }
+    if (flow.length) gsap.from(flow, { opacity: 0, duration: 1.2, delay: 1.2 });
     if (content) {
       gsap.from(content.children, { y: 34, opacity: 0, duration: 1.1, ease: 'power3.out', stagger: 0.09, delay: 0.1 });
     }

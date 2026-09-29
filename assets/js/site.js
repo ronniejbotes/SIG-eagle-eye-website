@@ -72,11 +72,22 @@
     };
     items.forEach((item) => {
       const btn = $('button', item);
-      btn.addEventListener('click', () => (item.classList.contains('is-open') ? close(item) : open(item)));
+      let hoverOpened = false;
+      btn.addEventListener('click', (e) => {
+        // A mouse user who hovered it open expects a click to keep it open;
+        // moving away or clicking elsewhere still closes it.
+        if (hoverOpened && e.pointerType === 'mouse' && item.classList.contains('is-open')) return;
+        if (item.classList.contains('is-open')) close(item);
+        else open(item);
+      });
       item.addEventListener('pointerenter', (e) => {
         if (e.pointerType !== 'mouse') return;
         clearTimeout(closeTimer);
         open(item);
+        hoverOpened = true;
+      });
+      item.addEventListener('pointerleave', (e) => {
+        if (e.pointerType === 'mouse') hoverOpened = false;
       });
       item.addEventListener('pointerleave', (e) => {
         if (e.pointerType !== 'mouse') return;
@@ -336,13 +347,26 @@
           return;
         }
         // No form service configured yet: hand the details to the visitor's email app.
-        const lines = [];
+        // Checkbox groups become one line, and selects use the text people chose.
+        const answers = new Map();
         data.forEach((value, key) => {
           if (key === 'company_website' || key === 'consent') return;
-          const label = ($(`[name="${key}"]`, form)?.closest('.field')?.querySelector('label')?.textContent || key).replace('*', '').trim();
-          lines.push(`${label}: ${value}`);
+          const v = String(value).trim();
+          if (!v) return;
+          if (!answers.has(key)) answers.set(key, []);
+          answers.get(key).push(v);
         });
-        const subject = encodeURIComponent('Site assessment request');
+        const lines = [];
+        answers.forEach((values, key) => {
+          const field = $(`[name="${key}"]`, form);
+          const wrap = field && field.closest('.field');
+          const labelEl = wrap && (wrap.querySelector('legend') || wrap.querySelector('label'));
+          const label = (labelEl ? labelEl.textContent : key).replace('*', '').trim();
+          const shown = field && field.tagName === 'SELECT' && field.selectedOptions[0] ? [field.selectedOptions[0].textContent.trim()] : values;
+          lines.push(`${label}: ${shown.join(', ')}`);
+        });
+        const company = String(data.get('company') || '').trim();
+        const subject = encodeURIComponent(company ? `Site assessment request: ${company}` : 'Site assessment request');
         const body = encodeURIComponent(lines.join('\n'));
         window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
         done(true, 'Your email app should now open with your request filled in. Press send to complete it.');

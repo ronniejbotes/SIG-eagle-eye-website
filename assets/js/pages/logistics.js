@@ -71,19 +71,20 @@
           tl.to(truck, { motionPath: { path: seg, align: seg, alignOrigin: [0.5, 0.5], autoRotate: true }, duration: 1 }, i);
         }
       });
-      gsap.set(steps, { opacity: 0.4 });
+      /* The step in view is highlighted; the others stay fully readable. */
       steps.forEach((step) => {
         ScrollTrigger.create({
           trigger: step,
           start: 'top 65%',
           end: 'bottom 35%',
-          onToggle: (self) => gsap.to(step, { opacity: self.isActive ? 1 : 0.4, duration: 0.3, overwrite: 'auto' }),
+          onToggle: (self) => step.classList.toggle('is-active', self.isActive),
         });
       });
       return () => {
         gsap.set([...segs, truck, ...steps], { clearProps: 'all' });
         truck.setAttribute('transform', 'translate(200 50)');
         nodes.forEach((n) => n.classList.remove('is-on'));
+        steps.forEach((st) => st.classList.remove('is-active'));
       };
     });
   }

@@ -147,6 +147,21 @@
   background: #fff;
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
+  transition:
+    border-color 300ms var(--ease),
+    box-shadow 300ms var(--ease);
+}
+.custody-step.is-active {
+  border-color: rgba(36, 102, 174, 0.6);
+  box-shadow:
+    0 0 0 4px rgba(36, 102, 174, 0.12),
+    var(--shadow-soft);
+}
+.custody-step--flag.is-active {
+  border-color: var(--gold-400);
+  box-shadow:
+    0 0 0 4px rgba(var(--gold-rgb), 0.22),
+    var(--shadow-soft);
 }
 .custody-step--flag {
   border-color: rgba(154, 110, 36, 0.4);
@@ -182,6 +197,10 @@
 .custody-step .chip--gold {
   border-color: rgba(154, 110, 36, 0.45);
   color: var(--gold-700);
+}
+.custody-step .chip--review {
+  border-color: var(--gold-300);
+  color: var(--navy-950);
 }
 
 /* ---------- Ledger ---------- */

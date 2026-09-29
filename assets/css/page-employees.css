@@ -1,0 +1,352 @@
+/* ==========================================================================
+   For employees: myth and fact cards, rights, the questions checklist
+   ========================================================================== */
+
+/* ---------- Hero ---------- */
+.emp-hero__grid {
+  display: grid;
+  gap: 56px;
+  align-items: center;
+}
+@media (min-width: 1000px) {
+  .emp-hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 72px;
+  }
+}
+.emp-hero .ph__title {
+  max-width: 17ch;
+  font-size: clamp(2.3rem, 4.4vw, 4rem);
+}
+.emp-hero__media {
+  position: relative;
+  padding-bottom: 28px;
+}
+.emp-hero__frame {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+}
+.emp-hero__frame .parallax__media {
+  inset: -8% 0;
+}
+.emp-hero__quote {
+  position: absolute;
+  left: -16px;
+  bottom: 0;
+  z-index: 2;
+  max-width: min(360px, 86%);
+  margin: 0;
+  padding: 16px 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+}
+.emp-hero__quote .serif {
+  display: block;
+  font-size: 1.3rem;
+  line-height: 1.25;
+  color: var(--navy);
+}
+@media (min-width: 1000px) {
+  .emp-hero__quote {
+    left: -40px;
+  }
+}
+
+/* ---------- Myth and fact ---------- */
+.flips {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) {
+  .flips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1040px) {
+  .flips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.flip {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  perspective: 1400px;
+  border-radius: 24px;
+}
+.flip__inner {
+  position: relative;
+  display: grid;
+  min-height: 230px;
+  transform-style: preserve-3d;
+  transition: transform 750ms var(--ease-out);
+}
+.flip[aria-pressed='true'] .flip__inner {
+  transform: rotateY(180deg);
+}
+.flip__face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 26px;
+  border-radius: 24px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.flip__face--front {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 40px -30px rgba(var(--navy-rgb), 0.4);
+  transition: box-shadow 300ms var(--ease);
+}
+.flip:hover .flip__face--front {
+  box-shadow: var(--shadow-soft);
+}
+.flip__face--back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(360px 220px at 100% 0%, rgba(var(--gold-rgb), 0.2), transparent 70%),
+    var(--navy-900);
+  color: #fff;
+}
+.flip__label {
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-56);
+}
+.flip__face--back .flip__label {
+  color: var(--gold-300);
+}
+.flip__myth {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.1vw, 1.85rem);
+  line-height: 1.18;
+  color: var(--navy);
+}
+.flip__turn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--royal-700);
+}
+.flip__turn .icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 300ms var(--ease);
+}
+.flip:hover .flip__turn .icon {
+  transform: translateX(4px);
+}
+.flip__fact {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ---------- If something is flagged ---------- */
+.flagged .row {
+  align-items: start;
+}
+.flagged__intro .h2 {
+  max-width: 13ch;
+}
+
+/* ---------- Rights ---------- */
+.rights {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) {
+  .rights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1100px) {
+  .rights {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.right-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px 24px;
+  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.right-card__n {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--gold);
+}
+.right-card__title {
+  margin: 4px 0 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+.right-card p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-72);
+}
+.right-card__law {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--royal-700);
+}
+.right-card--gold {
+  background:
+    radial-gradient(300px 200px at 100% 0%, rgba(var(--gold-rgb), 0.18), transparent 70%),
+    var(--navy-900);
+  border-color: transparent;
+  color: #fff;
+}
+.right-card--gold .right-card__n {
+  color: var(--gold-300);
+}
+.right-card--gold p {
+  color: rgba(255, 255, 255, 0.78);
+}
+.right-card--gold .right-card__law {
+  color: var(--gold-200);
+}
+
+/* ---------- Why it can work for you ---------- */
+.emp-good__media {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  max-width: 460px;
+}
+.emp-good__list {
+  display: grid;
+  gap: 4px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.emp-good__list li {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.emp-good__k {
+  padding-top: 3px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-700);
+}
+@media (max-width: 480px) {
+  .emp-good__list li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* ---------- Questions to ask ---------- */
+.ask {
+  display: grid;
+  gap: 32px;
+  padding: clamp(26px, 4vw, 56px);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(228, 234, 241, 0.7));
+}
+@media (min-width: 960px) {
+  .ask {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 64px;
+    align-items: center;
+  }
+}
+.ask .h2 {
+  max-width: 12ch;
+}
+.ask__status {
+  min-height: 1.5em;
+  margin: 14px 0 0;
+  font-weight: 600;
+  color: var(--royal-700);
+}
+.ask__list {
+  counter-reset: ask;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ask__list li {
+  counter-increment: ask;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-weight: 600;
+}
+.ask__list li::before {
+  content: counter(ask);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--gold-200);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+/* Printing just the questions */
+@media print {
+  html.print-ask body > *:not(main),
+  html.print-ask main > section:not(:has([data-ask])) {
+    display: none !important;
+  }
+  html.print-ask .ask {
+    display: block;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+  }
+  html.print-ask .ask .actions,
+  html.print-ask .ask__status,
+  html.print-ask .eyebrow {
+    display: none;
+  }
+  html.print-ask .ask__list li {
+    border-color: #999;
+  }
+}

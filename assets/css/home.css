@@ -1105,6 +1105,12 @@
 .pipeline__foot {
   margin-top: 40px;
 }
+/* Phones: the page scroll drives the strip (motion.js pins it), so it no longer swipes. */
+.pipeline.is-rail .pipeline__viewport {
+  overflow: hidden;
+  scroll-snap-type: none;
+  padding-block: 8px 18px;
+}
 
 /* Mini illustrations */
 .pipe-art {

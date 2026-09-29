@@ -209,7 +209,8 @@
     });
   }
 
-  /* Pipeline: pinned horizontal track on wide screens, swipeable strip elsewhere. */
+  /* Pipeline: the page scroll drives the card track sideways. Wide screens pin the
+     whole section; phones pin just the strip. Without motion it is a swipeable strip. */
   function initPipeline(gsap, ScrollTrigger) {
     const section = document.querySelector('[data-pipeline]');
     if (!section) return;
@@ -229,6 +230,31 @@
         section.classList.remove('is-scrubbed');
         section.style.removeProperty('--pipe-h');
         gsap.set([track, bar], { clearProps: 'all' });
+      };
+    });
+    // Phones and short screens: the whole section won't fit on one screen, so the
+    // heading scrolls past as normal, then the card strip pins mid-screen and
+    // slides sideways as you keep scrolling down.
+    mm.add('(max-width: 999px), (max-height: 639px)', () => {
+      const viewport = section.querySelector('.pipeline__viewport');
+      section.classList.add('is-rail');
+      const distance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+      gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: viewport,
+          start: 'center center',
+          end: () => `+=${distance()}`,
+          pin: true,
+          scrub: 0.5,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+      return () => {
+        section.classList.remove('is-rail');
+        gsap.set(track, { clearProps: 'all' });
       };
     });
   }

@@ -1,0 +1,339 @@
+/* ==========================================================================
+   Logistics & fleet: hero route, chain of custody, handover ledger
+   ========================================================================== */
+
+/* ---------- Hero route line ---------- */
+.log-hero__route {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.log-hero__line {
+  fill: none;
+  stroke: var(--gold-300);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 10px rgba(var(--gold-rgb), 0.6));
+}
+.log-hero__stop circle {
+  fill: var(--navy-950);
+  stroke: var(--gold-300);
+  stroke-width: 3;
+}
+.log-hero__stop text {
+  fill: #fff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  paint-order: stroke;
+  stroke: rgba(2, 10, 28, 0.8);
+  stroke-width: 4px;
+}
+@media (max-width: 999px) {
+  .log-hero__route {
+    display: none;
+  }
+}
+
+/* ---------- Context ---------- */
+.log-context__stat .stat__num {
+  font-size: clamp(5rem, 14vw, 11rem);
+  color: var(--gold-300);
+}
+.log-context__stat .stat__label {
+  max-width: 24em;
+  margin-top: 12px;
+  font-size: 1.05rem;
+}
+.log-context .h2 {
+  max-width: 15ch;
+}
+
+/* ---------- Chain of custody ---------- */
+.custody__grid {
+  display: grid;
+  gap: 32px;
+}
+.custody__map {
+  display: none;
+}
+@media (min-width: 980px) {
+  .custody__grid {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 72px;
+  }
+  .custody__map {
+    display: block;
+  }
+}
+.custody__sticky {
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+  height: calc(100vh - var(--header-h) - 48px);
+  display: grid;
+  place-items: center;
+}
+.custody__svg {
+  width: auto;
+  height: 100%;
+  max-height: 760px;
+  overflow: visible;
+}
+.custody__ghost path {
+  fill: none;
+  stroke: rgba(var(--navy-rgb), 0.14);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 2 12;
+}
+.custody__live path {
+  fill: none;
+  stroke: var(--royal);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.custody__nodes circle {
+  fill: #fff;
+  stroke: var(--royal);
+  stroke-width: 4;
+  transition:
+    fill 300ms var(--ease),
+    stroke 300ms var(--ease);
+}
+.custody__nodes .is-flag circle {
+  stroke: var(--gold-400);
+}
+.custody__nodes .is-on circle {
+  fill: var(--royal);
+}
+.custody__nodes .is-flag.is-on circle {
+  fill: var(--gold-400);
+}
+.custody__nodes text {
+  fill: var(--navy);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 17px;
+}
+.custody__trailer {
+  fill: var(--navy);
+}
+.custody__cab {
+  fill: var(--gold-400);
+}
+.custody__glass {
+  fill: rgba(255, 255, 255, 0.65);
+}
+.custody__steps {
+  display: grid;
+  gap: 18px;
+}
+@media (min-width: 980px) {
+  .custody__steps {
+    gap: 26vh;
+    padding-block: 6vh 18vh;
+  }
+}
+.custody-step {
+  padding: clamp(24px, 3vw, 36px);
+  border-radius: var(--radius);
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+}
+.custody-step--flag {
+  border-color: rgba(154, 110, 36, 0.4);
+  background: linear-gradient(170deg, rgba(var(--gold-rgb), 0.14), #fff 60%);
+}
+.custody-step__n {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--royal);
+}
+.custody-step--flag .custody-step__n {
+  color: var(--gold-700);
+}
+.custody-step .h3 {
+  font-size: 1.4rem;
+}
+.custody-step p {
+  color: var(--ink-72);
+}
+.custody-step__rec {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+.custody-step .chip {
+  border-color: rgba(36, 102, 174, 0.35);
+  color: var(--royal-700);
+}
+.custody-step .chip--gold {
+  border-color: rgba(154, 110, 36, 0.45);
+  color: var(--gold-700);
+}
+
+/* ---------- Ledger ---------- */
+.ledger-sec .h2 {
+  max-width: 13ch;
+}
+.ledger-sec .lede {
+  margin-bottom: 28px;
+}
+.ledger {
+  padding: clamp(18px, 2.4vw, 28px);
+}
+.ledger__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.ledger__title {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+.ledger__meta {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-56);
+}
+.ledger__row {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 0.8fr 0.7fr 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+.ledger__row--th {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-56);
+}
+.ledger__row--flag {
+  margin-inline: -6px;
+  padding-inline: 12px;
+  border-radius: 12px;
+  background: rgba(var(--gold-rgb), 0.18);
+  border-bottom-color: transparent;
+}
+.ledger__row .chip {
+  border-color: var(--line-strong);
+  color: var(--ink-72);
+}
+.ledger__row .chip--review {
+  border-color: var(--gold-400);
+  background: var(--gold-300);
+  color: var(--navy-950);
+}
+.ledger__row .chip--ok {
+  border-color: var(--royal);
+  background: var(--royal);
+  color: #fff;
+}
+.ledger__review {
+  margin-top: 18px;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--navy-900);
+  color: #fff;
+}
+.ledger__review p {
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.95rem;
+}
+.ledger__review p:last-child {
+  margin-bottom: 0;
+}
+.ledger__review-kicker {
+  font-size: 0.7rem !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-300) !important;
+}
+.ledger__outcome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+@media (max-width: 560px) {
+  .ledger__row {
+    grid-template-columns: 0.9fr 1fr 0.7fr 0.6fr;
+    font-size: 0.84rem;
+  }
+  .ledger__row > :nth-child(3) {
+    display: none;
+  }
+}
+
+/* ---------- Risk cards ---------- */
+.log-cards {
+  display: grid;
+  gap: 18px;
+}
+@media (min-width: 720px) {
+  .log-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1180px) {
+  .log-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.log-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition:
+    transform 300ms var(--ease-out),
+    border-color 300ms var(--ease);
+}
+.log-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--gold-rgb), 0.45);
+}
+.log-card__media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.log-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms var(--ease-out);
+}
+.log-card:hover .log-card__media img {
+  transform: scale(1.06);
+}
+.log-card__body {
+  padding: 24px;
+}
+.log-card__body p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.94rem;
+}

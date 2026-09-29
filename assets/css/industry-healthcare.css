@@ -1,0 +1,454 @@
+/* ==========================================================================
+   Healthcare: light hero, privacy compare slider, night dial
+   ========================================================================== */
+
+/* ---------- Hero ---------- */
+.hc-hero__grid {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+@media (min-width: 1000px) {
+  .hc-hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 72px;
+  }
+}
+.hc-hero .ph__title .serif {
+  color: var(--royal);
+}
+.hc-hero__media {
+  position: relative;
+}
+.hc-hero__frame {
+  aspect-ratio: 5 / 4;
+  border-radius: 200px 200px var(--radius-lg) var(--radius-lg);
+}
+.hc-hero__frame .parallax__media {
+  inset: -8% 0;
+}
+.hc-badge {
+  position: absolute;
+  left: -12px;
+  bottom: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px 14px 16px;
+  border-radius: 18px;
+}
+.hc-badge .icon {
+  width: 34px;
+  height: 34px;
+  color: var(--royal);
+}
+.hc-badge strong {
+  display: block;
+  font-size: 0.98rem;
+}
+.hc-badge span span {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--ink-56);
+}
+@media (min-width: 1000px) {
+  .hc-badge {
+    left: -40px;
+  }
+}
+
+/* ---------- Three differences ---------- */
+.hc-three {
+  display: grid;
+  gap: 18px;
+}
+@media (min-width: 900px) {
+  .hc-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.hc-three__item {
+  padding: 32px 28px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #fff, var(--frost));
+  border: 1px solid var(--line);
+}
+.hc-three__item h3 {
+  margin: 22px 0 10px;
+}
+.hc-three__item p {
+  margin: 0;
+  color: var(--ink-72);
+  font-size: 0.96rem;
+}
+
+/* ---------- Compare slider ---------- */
+.privacy .h2 {
+  max-width: 15ch;
+}
+.hc-legend {
+  display: grid;
+  gap: 12px;
+  margin-top: 26px;
+  font-weight: 600;
+  font-size: 0.94rem;
+}
+.hc-legend li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hc-legend__swatch {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+.hc-legend__swatch--mask {
+  background: repeating-linear-gradient(45deg, #c9d6e6 0 4px, #e9eff6 4px 8px);
+  border: 1.5px solid #8ea3bd;
+}
+.hc-legend__swatch--watch {
+  border: 2.5px solid var(--sky);
+  background: rgba(var(--sky-rgb), 0.12);
+}
+.cmp {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--navy-900);
+  user-select: none;
+  touch-action: pan-y;
+}
+.cmp__layer {
+  position: absolute;
+  inset: 0;
+}
+.cmp__layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cmp__layer--ee {
+  clip-path: inset(0 0 0 var(--pos));
+}
+.cmp__layer--ee img {
+  filter: saturate(0.5) brightness(0.9);
+}
+.cmp__mask,
+.cmp__box {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.cmp__mask {
+  background: repeating-linear-gradient(45deg, rgba(201, 214, 230, 0.96) 0 6px, rgba(233, 239, 246, 0.96) 6px 12px);
+  border: 1.5px solid #8ea3bd;
+}
+.cmp__box {
+  border: 2.5px solid var(--sky);
+  background: rgba(var(--sky-rgb), 0.1);
+  border-radius: 4px;
+}
+.cmp__box--soft {
+  border-style: dashed;
+  border-width: 2px;
+}
+.cmp__mask em,
+.cmp__box em {
+  position: absolute;
+  top: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(2, 10, 28, 0.82);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.cmp__mask em {
+  top: 40%;
+  background: rgba(14, 19, 34, 0.7);
+}
+.cmp__box em {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+.cmp__label {
+  position: absolute;
+  top: 16px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(2, 10, 28, 0.72);
+  color: #fff;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.cmp__label--l {
+  left: 16px;
+}
+.cmp__label--r {
+  right: 16px;
+  background: var(--royal);
+}
+.cmp__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  width: 3px;
+  margin-left: -1.5px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+.cmp__handle span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+  border-radius: 50%;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23001848' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l-5 6 5 6M15 6l5 6-5 6'/%3E%3C/svg%3E") center / 24px no-repeat;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+}
+.cmp__range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+.cmp:has(.cmp__range:focus-visible) .cmp__handle span {
+  outline: 3px solid var(--sky);
+  outline-offset: 3px;
+}
+@media (max-width: 640px) {
+  .cmp__mask em,
+  .cmp__box em {
+    font-size: 0.5rem;
+    padding: 3px 5px;
+  }
+}
+
+/* ---------- Night dial ---------- */
+.dial-sec {
+  overflow: clip;
+}
+.dial-sec__stage {
+  padding-block: var(--section-y);
+}
+.dial-sec__grid {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+@media (min-width: 1000px) {
+  .dial-sec__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 72px;
+  }
+}
+.dial-sec .h2 {
+  max-width: 13ch;
+  margin-bottom: 30px;
+}
+.dial-log {
+  display: grid;
+  gap: 4px;
+}
+.dial-log__item {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  transition:
+    background-color 300ms var(--ease),
+    opacity 300ms var(--ease);
+}
+.dial-log__t {
+  padding-top: 2px;
+  font-size: 0.82rem;
+  color: var(--sky);
+}
+.dial-log__item--flag .dial-log__t {
+  color: var(--gold-300);
+}
+.dial-log__item strong {
+  display: block;
+  font-size: 0.98rem;
+}
+.dial-log__item span:not(.dial-log__t) {
+  display: block;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.66);
+}
+.dial-log__item.is-now {
+  background: rgba(255, 255, 255, 0.07);
+}
+.dial-log__item--flag.is-now {
+  background: rgba(var(--gold-rgb), 0.16);
+}
+.dial {
+  margin: 0;
+  justify-self: center;
+  width: min(500px, 100%);
+}
+.dial__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.dial__face {
+  fill: rgba(255, 255, 255, 0.03);
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 1.5;
+}
+.dial__night {
+  fill: none;
+  stroke: rgba(var(--sky-rgb), 0.28);
+  stroke-width: 18;
+}
+.dial__ticks line {
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 2;
+}
+.dial__ticks line.major {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 3;
+}
+.dial__num {
+  fill: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  text-anchor: middle;
+}
+.dial__events circle {
+  fill: var(--navy-950);
+  stroke: var(--sky);
+  stroke-width: 3;
+  transition: fill 300ms var(--ease);
+}
+.dial__events .is-flag circle {
+  stroke: var(--gold-300);
+}
+.dial__events .is-on circle {
+  fill: var(--sky);
+}
+.dial__events .is-flag.is-on circle {
+  fill: var(--gold-300);
+}
+.dial__hand line {
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.dial__hand circle {
+  fill: var(--gold-300);
+}
+.dial__hub {
+  fill: #fff;
+}
+.dial__time {
+  fill: #fff;
+  font-size: 44px;
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 1000px) and (min-height: 700px) {
+  .dial-sec.is-scrubbed .dial-sec__track {
+    height: 300vh;
+  }
+  .dial-sec.is-scrubbed .dial-sec__stage {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    padding-block: calc(var(--header-h) + 8px) 24px;
+  }
+  .dial-sec.is-scrubbed .dial-sec__grid {
+    width: 100%;
+  }
+  .dial-sec.is-scrubbed .dial-log__item {
+    opacity: 0.4;
+  }
+  .dial-sec.is-scrubbed .dial-log__item.is-now,
+  .dial-sec.is-scrubbed .dial-log__item.is-past {
+    opacity: 1;
+  }
+}
+
+/* ---------- Risks ---------- */
+.hc-risks {
+  display: grid;
+  gap: 18px;
+}
+@media (min-width: 760px) {
+  .hc-risks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.hc-risk {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  transition:
+    box-shadow 300ms var(--ease-out),
+    transform 300ms var(--ease-out);
+}
+.hc-risk:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-soft);
+}
+.hc-risk img {
+  width: 100%;
+  height: 100%;
+  min-height: 190px;
+  object-fit: cover;
+}
+.hc-risk__body {
+  padding: 26px 24px;
+}
+.hc-risk__body p {
+  margin: 0;
+  color: var(--ink-72);
+  font-size: 0.94rem;
+}
+@media (max-width: 480px) {
+  .hc-risk {
+    grid-template-columns: 1fr;
+  }
+  .hc-risk img {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+  }
+}
+
+/* ---------- Built for ---------- */
+.hc-who__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+}
+.hc-who__list li {
+  padding: 14px 22px;
+  border-radius: var(--pill);
+  border: 1.5px solid var(--line-strong);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+}

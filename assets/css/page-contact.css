@@ -1,5 +1,7 @@
 /* ==========================================================================
-   Contact: intro and steps, the assessment form, the industry preview
+   Contact: the two routes, the get-started funnel (camera and site pickers,
+   the pretend installation calendar, the simulated debit order), the
+   industry preview
    ========================================================================== */
 
 .ct-grid {
@@ -20,55 +22,57 @@
 .ct-hero .ph__title {
   max-width: 13ch;
 }
-.ct-steps {
-  position: relative;
+
+/* ---------- The two routes ---------- */
+.ct-routes {
   display: grid;
-  gap: 18px;
-  margin: 36px 0 0;
+  gap: 12px;
+  margin: 34px 0 0;
 }
-.ct-steps::before {
-  content: '';
-  position: absolute;
-  left: 19px;
-  top: 12px;
-  bottom: 12px;
-  width: 2px;
-  background: linear-gradient(180deg, var(--royal), var(--gold-400));
-  opacity: 0.4;
-}
-.ct-steps li {
-  position: relative;
+.ct-route {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-columns: 52px minmax(0, 1fr);
   gap: 16px;
+  align-items: start;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1.5px solid var(--line);
+  background: rgba(255, 255, 255, 0.42);
+  transition:
+    border-color 240ms var(--ease),
+    background-color 240ms var(--ease),
+    box-shadow 240ms var(--ease),
+    opacity 240ms var(--ease);
 }
-.ct-steps__n {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--paper);
-  border: 2px solid var(--royal);
-  color: var(--royal);
-  font-size: 0.74rem;
-}
-.ct-steps li:last-child .ct-steps__n {
-  border-color: var(--gold-400);
-  color: var(--gold-700);
-}
-.ct-steps__title {
-  margin: 8px 0 2px;
-  font-weight: 800;
-  font-size: 1rem;
-  line-height: 1.35;
-}
-.ct-steps p:not(.ct-steps__title) {
+.ct-route p {
   margin: 0;
   font-size: 0.92rem;
   color: var(--ink-72);
+}
+.ct-route p.ct-route__when {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-56);
+}
+.ct-route p.ct-route__title {
+  margin: 2px 0 4px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.ct-route.is-active {
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--shadow-soft);
+}
+.ct-route[data-route='install'].is-active {
+  border-color: var(--gold-400);
+}
+.ct-route[data-route='meeting'].is-active {
+  border-color: var(--royal);
+}
+.ct-route.is-dim {
+  opacity: 0.55;
 }
 .ct-direct {
   margin: 34px 0 0;
@@ -84,6 +88,677 @@
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.72);
 }
+
+/* ---------- Funnel frame ---------- */
+.fx {
+  display: grid;
+  gap: 24px;
+}
+.fx-head {
+  display: grid;
+  gap: 10px;
+}
+.fx-head__label {
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-72);
+}
+.fx-bar {
+  height: 4px;
+  border-radius: var(--pill);
+  background: var(--line);
+  overflow: hidden;
+}
+.fx-bar span {
+  display: block;
+  width: 6%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--royal), var(--gold-400));
+  transition: width 500ms var(--ease-out);
+}
+.fx-step {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+/* An error under one field mustn't stretch its neighbour in the same row. */
+.fx .field {
+  align-content: start;
+}
+.fx-block {
+  display: grid;
+  gap: 6px;
+}
+.fx-title {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.fx-title:focus {
+  outline: none;
+}
+.fx-title--sub {
+  font-size: 1.05rem;
+}
+.fx-hint {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-72);
+}
+.fx-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+.fx-nav .btn--gold {
+  flex: 1 1 240px;
+}
+.fx-nav .btn--ghost {
+  color: var(--navy);
+  border-color: var(--line-strong);
+}
+.fx-nav .btn--ghost:hover {
+  border-color: var(--navy);
+}
+.fx-nav .btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ---------- Count pickers: little cameras and buildings ---------- */
+.fx-tiles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.fx-tile {
+  --tile-fg: var(--ink-56);
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 64px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1.5px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--tile-fg);
+  transition:
+    background-color 200ms var(--ease),
+    border-color 200ms var(--ease),
+    color 200ms var(--ease),
+    transform 200ms var(--ease);
+  transition-delay: calc(var(--i) * 12ms);
+}
+.fx-tile .icon {
+  width: 30px;
+  height: 30px;
+  transition: transform 260ms var(--ease-out);
+  transition-delay: inherit;
+}
+.fx-tile__n {
+  position: absolute;
+  right: 7px;
+  bottom: 4px;
+  font-size: 0.62rem;
+  opacity: 0.7;
+}
+.fx-tile__more {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.fx-tile:hover,
+.fx-tile.is-preview {
+  border-color: var(--royal);
+  background: rgba(36, 102, 174, 0.08);
+  --tile-fg: var(--royal);
+  transition-delay: 0ms;
+}
+.fx-tile:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 2px;
+}
+/* Switched on: the camera is "live", blue for what the system sees. */
+.fx-tile.is-on {
+  border-color: var(--navy);
+  background: linear-gradient(160deg, var(--navy-800), var(--navy));
+  --tile-fg: #fff;
+}
+.fx-tile.is-on .icon {
+  color: var(--sky);
+  transform: rotate(-6deg);
+}
+.fx-tiles--cams .fx-tile.is-on::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff4d4d;
+  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.22);
+  animation: fx-rec 1.6s ease-in-out infinite;
+}
+@keyframes fx-rec {
+  50% {
+    opacity: 0.35;
+  }
+}
+.fx-tiles--sites .fx-tile.is-on .icon {
+  transform: none;
+}
+/* The "15+" tile is gold: past it, people plan the rollout with you. */
+.fx-tile--more.is-on {
+  border-color: var(--gold-700);
+  background: linear-gradient(180deg, #e6c683 0%, #cfa154 100%);
+}
+.fx-tile--more.is-on .fx-tile__more {
+  color: #0a1330;
+}
+.fx-tile--more.is-on::after {
+  display: none;
+}
+@media (min-width: 560px) {
+  .fx-tile {
+    height: 72px;
+  }
+  .fx-tile .icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.fx-qty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 12px;
+}
+.fx-qty .field__error {
+  flex-basis: 100%;
+}
+.fx-stepper {
+  display: grid;
+  grid-template-columns: 48px 92px 48px;
+  gap: 6px;
+}
+.fx-stepper .input {
+  min-height: 48px;
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 1.05rem;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.fx-stepper .input::-webkit-inner-spin-button,
+.fx-stepper .input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.fx-stepper__btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1.5px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--navy);
+  transition: border-color 160ms var(--ease);
+}
+.fx-stepper__btn:hover {
+  border-color: var(--navy);
+}
+.fx-stepper__btn .icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+/* The route the counts lead to */
+.fx-route {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1.5px solid;
+}
+.fx-route p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-72);
+}
+.fx-route p.fx-route__title {
+  margin-bottom: 2px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.fx-route strong {
+  color: var(--ink);
+}
+.fx-route--install {
+  border-color: rgba(154, 110, 36, 0.4);
+  background: rgba(var(--gold-rgb), 0.14);
+}
+.fx-route--meeting {
+  border-color: rgba(36, 102, 174, 0.32);
+  background: rgba(36, 102, 174, 0.08);
+}
+
+/* ---------- Pretend installation calendar ---------- */
+.fx-cal {
+  padding: 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.8);
+}
+.fx-cal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.fx-cal__month {
+  margin: 0;
+  font-weight: 800;
+}
+.fx-cal__nav {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  background: #fff;
+  color: var(--navy);
+}
+.fx-cal__nav .icon {
+  width: 18px;
+  height: 18px;
+}
+.fx-cal__nav--prev .icon {
+  transform: rotate(90deg);
+}
+.fx-cal__nav--next .icon {
+  transform: rotate(-90deg);
+}
+.fx-cal__nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.fx-cal__dow,
+.fx-cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+.fx-cal__dow span {
+  padding: 4px 0;
+  text-align: center;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  color: var(--ink-56);
+}
+.fx-day {
+  position: relative;
+  height: 44px;
+  padding: 0;
+  border-radius: 12px;
+  border: 1.5px solid transparent;
+  background: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink-56);
+}
+.fx-day--closed {
+  opacity: 0.45;
+  cursor: default;
+}
+.fx-day--open {
+  background: rgba(36, 102, 174, 0.1);
+  color: var(--navy);
+  transition:
+    border-color 160ms var(--ease),
+    background-color 160ms var(--ease);
+}
+.fx-day--open:hover {
+  border-color: var(--royal);
+}
+.fx-day--full {
+  cursor: default;
+  text-decoration: line-through;
+  text-decoration-color: rgba(179, 38, 30, 0.6);
+  text-decoration-thickness: 1.5px;
+}
+.fx-day:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 1px;
+}
+.fx-day[aria-pressed='true'] {
+  background: linear-gradient(160deg, var(--navy-800), var(--navy));
+  border-color: var(--navy);
+  color: #fff;
+}
+.fx-day.is-today::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--gold-400);
+}
+.fx-cal__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 12px 0 0;
+  color: var(--ink-56);
+}
+.fx-cal__key {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+.fx-cal__key--open {
+  background: rgba(36, 102, 174, 0.22);
+}
+.fx-cal__key--full {
+  margin-left: 10px;
+  background: linear-gradient(135deg, transparent 44%, rgba(179, 38, 30, 0.7) 45%, rgba(179, 38, 30, 0.7) 55%, transparent 56%), rgba(14, 19, 34, 0.08);
+}
+
+/* Pill radios: arrival windows and debit days */
+.fx-slots,
+.fx-choices {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.fx-slots legend,
+.fx-choices legend {
+  margin-bottom: 8px;
+  padding: 0;
+}
+.fx-slots__grid,
+.fx-choices__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.fx-choices__grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (min-width: 560px) {
+  .fx-slots__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.fx-choice {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+.fx-choice input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: inherit;
+}
+.fx-choice span {
+  display: grid;
+  place-items: center;
+  min-height: 52px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  transition:
+    border-color 160ms var(--ease),
+    background-color 160ms var(--ease);
+}
+.fx-choice small {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--ink-56);
+}
+.fx-choice:hover span {
+  border-color: var(--royal);
+}
+.fx-choice input:checked + span {
+  border-color: var(--navy);
+  background: linear-gradient(160deg, var(--navy-800), var(--navy));
+  color: #fff;
+}
+.fx-choice input:focus-visible + span {
+  outline: 3px solid var(--sky);
+  outline-offset: 2px;
+}
+.fx-choice:has(input:disabled) {
+  cursor: default;
+}
+.fx-choice input:disabled + span {
+  border-style: dashed;
+  background: transparent;
+  color: var(--ink-56);
+}
+
+/* ---------- Simulated debit order ---------- */
+.fx-demo {
+  margin: 6px 0 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1.5px dashed rgba(154, 110, 36, 0.55);
+  background: rgba(var(--gold-rgb), 0.12);
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--ink-72);
+}
+.fx-demo strong {
+  color: var(--gold-700);
+}
+.fx-bill {
+  display: grid;
+  gap: 10px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, var(--navy-800), var(--navy-950));
+  color: rgba(255, 255, 255, 0.78);
+  box-shadow: var(--shadow-soft);
+}
+.fx-bill__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  font-size: 0.92rem;
+}
+.fx-bill__row--total {
+  padding-top: 10px;
+  border-top: 1px solid var(--line-light);
+  color: #fff;
+  font-weight: 700;
+}
+.fx-bill__total {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--gold-300);
+}
+.fx-bill__row--first span:last-child {
+  color: #fff;
+  font-weight: 600;
+}
+.fx-wait {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 28px 8px 12px;
+  text-align: center;
+}
+.fx-wait p {
+  margin: 0;
+}
+.fx-wait__phone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, var(--navy-800), var(--navy));
+  color: var(--sky);
+  transition:
+    background-color 300ms var(--ease),
+    color 300ms var(--ease);
+}
+.fx-wait__phone .icon {
+  width: 38px;
+  height: 38px;
+}
+.fx-wait__phone::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 30px;
+  border: 2px solid rgba(var(--sky-rgb), 0.5);
+  animation: fx-ping 1.4s var(--ease-out) infinite;
+}
+@keyframes fx-ping {
+  from {
+    transform: scale(0.92);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+}
+.fx-wait.is-approved .fx-wait__phone {
+  background: linear-gradient(180deg, #e6c683 0%, #cfa154 100%);
+  color: var(--navy);
+}
+.fx-wait.is-approved .fx-wait__phone::after {
+  animation: none;
+  opacity: 0;
+}
+.fx-wait__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+.fx-wait__text {
+  max-width: 34em;
+  font-size: 0.94rem;
+  color: var(--ink-72);
+}
+.fx-wait__demo {
+  margin-top: 8px !important;
+}
+
+/* ---------- Finish lines ---------- */
+.fx-done {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+}
+.fx-done p {
+  margin: 0;
+}
+.fx-done__mark {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #e6c683 0%, #cfa154 100%);
+  color: var(--navy);
+  box-shadow: 0 16px 34px -18px rgba(154, 110, 36, 0.8);
+}
+.fx-done__mark .icon {
+  width: 28px;
+  height: 28px;
+  stroke-width: 2.4;
+}
+.fx-done__ref {
+  font-weight: 600;
+  color: var(--ink-72);
+}
+.fx-done__ref .mono {
+  margin-left: 6px;
+  padding: 3px 10px;
+  border-radius: var(--pill);
+  background: rgba(36, 102, 174, 0.1);
+  color: var(--navy);
+}
+.fx-done__note {
+  font-size: 0.94rem;
+  color: var(--ink-72);
+}
+.fx-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2px;
+  width: 100%;
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.8);
+}
+@media (min-width: 560px) {
+  .fx-summary {
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 10px 20px;
+  }
+}
+.fx-summary dt {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-56);
+  padding-top: 3px;
+}
+.fx-summary dd {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+@media (min-width: 560px) {
+  .fx-summary dd {
+    margin: 0;
+  }
+}
+
+/* ---------- Industry preview (meeting route) ---------- */
 .ct-preview {
   padding: 14px 18px;
   border-left: 3px solid var(--gold-400);

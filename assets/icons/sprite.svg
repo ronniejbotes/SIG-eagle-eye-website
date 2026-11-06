@@ -40,4 +40,10 @@
   <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 012-2h7a2 2 0 012 2v16M3 21h13M7 7h5v4H7z"/><path d="M15 9h2a2 2 0 012 2v6a1.5 1.5 0 003 0V8l-3-3"/></symbol>
   <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="5" r="2.2"/><path d="M8.2 19H16a3 3 0 000-6H8a3 3 0 010-6h7.8"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-cctv" viewBox="0 0 24 24"><path d="M3.6 4.8l12.6 3.4-1.7 6.2L1.9 11z"/><path d="M16.2 8.2l3.4.9-1.7 6.2-3.4-.9"/><path d="M8.4 12.7l-1 4.8H3.2M3.2 15v5"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4.5 21V5.5L13 3v18M13 9l6.5 2v10M2.5 21h19M7.5 8h2.5M7.5 11.5h2.5M7.5 15h2.5M15.8 14h1.5M15.8 17.5h1.5"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.8h17M8 3v4M16 3v4M7.5 13.5h2M11 13.5h2M14.5 13.5h2M7.5 17h2M11 17h2"/></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9.5L12 4l9 5.5M4.5 9.8h15M6 10.5v7M10 10.5v7M14 10.5v7M18 10.5v7M3.5 20.5h17"/></symbol>
+  <symbol id="i-phone-app" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.4"/><path d="M10.5 5.5h3M9.6 12.4l1.7 1.7 3.2-3.5"/></symbol>
 </svg>

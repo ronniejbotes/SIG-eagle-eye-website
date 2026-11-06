@@ -3,7 +3,8 @@
  * Step 1 counts cameras and sites. A small setup (up to data-max-cameras cameras on
  * up to data-max-sites sites) books online: a pretend installation calendar, contact
  * details and a simulated DebiCheck debit order. Anything bigger tells us about the
- * business, and we contact them to set up a meeting. Both paths post to data-endpoint.
+ * business, and we contact them to set up a meeting. It is a demo: nothing is sent
+ * anywhere, and both paths finish in the browser.
  * Industry links (?industry=retail) pre-select the industry, and the meeting path
  * previews what we'll look at for that industry.
  */
@@ -349,8 +350,6 @@
       price: Number(form.dataset.price) || 100,
       maxCameras: Number(form.dataset.maxCameras) || 14,
       maxSites: Number(form.dataset.maxSites) || 1,
-      endpoint: form.dataset.endpoint || '',
-      email: form.dataset.email || '',
     };
     const step = (name) => $(`[data-step="${name}"]`, form);
     const field = (id) => document.getElementById(id);
@@ -487,63 +486,13 @@
       title.textContent = 'Debit order approved';
       text.textContent = 'Finishing your booking…';
       state.reference = `SIG-${Date.now().toString(36).slice(-3).toUpperCase()}${Math.random().toString(36).slice(2, 5).toUpperCase()}`;
-      const [sent] = await Promise.all([send(installFields()), sleep(1000)]);
-      booked(sent, bank);
+      await sleep(1000);
+      booked(bank);
       fields.hidden = false;
       wait.hidden = true;
     }
 
-    /* What each path sends. Bank details are never part of it. */
-    const honeypot = () => (form.querySelector('[name="company_website"]') || {}).value || '';
-    const installFields = () => ({
-      type: 'install',
-      reference: state.reference,
-      cameras: String(cameras.value()),
-      sites: String(sites.value() || 1),
-      monthly: rand(cameras.value() * cfg.price),
-      install_date: fmtLong.format(fromIso(state.date)),
-      install_time: state.time,
-      name: field('f-i-name').value.trim(),
-      company: field('f-i-company').value.trim(),
-      email: field('f-i-email').value.trim(),
-      phone: field('f-i-phone').value.trim(),
-      address: field('f-i-address').value.trim(),
-      industry: optionText(field('f-i-industry')),
-      debit_day: ordinal(debitDay()),
-      first_debit: fmtDate.format(firstDebit()),
-      consent: 'yes',
-      company_website: honeypot(),
-    });
-    const meetingFields = () => ({
-      type: 'meeting',
-      cameras: String(cameras.value()),
-      sites: String(sites.value() || 1),
-      company: field('f-m-company').value.trim(),
-      industry: optionText(field('f-m-industry')),
-      about: field('f-m-about').value.trim(),
-      concerns: $$('input[name="concerns"]:checked', form).map((i) => i.value).join(', '),
-      name: field('f-m-name').value.trim(),
-      role: field('f-m-role').value.trim(),
-      email: field('f-m-email').value.trim(),
-      phone: field('f-m-phone').value.trim(),
-      consent: 'yes',
-      company_website: honeypot(),
-    });
-    async function send(fields) {
-      if (!cfg.endpoint) return false;
-      const body = new FormData();
-      Object.entries(fields).forEach(([k, v]) => body.append(k, v));
-      try {
-        const res = await fetch(cfg.endpoint, { method: 'POST', body, headers: { Accept: 'application/json' } });
-        if (!res.ok) return false;
-        const json = await res.json().catch(() => ({}));
-        return json.ok !== false;
-      } catch (err) {
-        return false;
-      }
-    }
-
-    /* The two finish lines */
+    /* The two finish lines. Nothing is sent anywhere: this is a demo. */
     const fillSummary = (dl, rows) => {
       dl.innerHTML = '';
       rows.forEach(([term, value]) => {
@@ -557,7 +506,7 @@
     };
     const firstName = (id) => field(id).value.trim().split(/\s+/)[0];
 
-    function booked(sent, bank) {
+    function booked(bank) {
       const email = field('f-i-email').value.trim();
       const acct = account.value;
       $('[data-booked-title]', form).textContent = `You're booked, ${firstName('f-i-name')}.`;
@@ -569,53 +518,23 @@
         ['Debit order', `${rand(cameras.value() * cfg.price)} a month on the ${ordinal(debitDay())}, from ${fmtDate.format(firstDebit())}`],
         ['Account', `${bank} ••••${acct.slice(-4)}`],
       ]);
-      $('[data-booked-note]', form).textContent = sent
-        ? `We've emailed the details to ${email}. If anything changes, reply to that email.`
-        : `We couldn't send your confirmation email just now. Keep your booking reference, and email ${cfg.email} if anything changes.`;
+      $('[data-booked-note]', form).textContent = `Demo: nothing was booked or sent. On the live site, these details would be emailed to ${email}.`;
       show('booked');
     }
 
     async function requestMeeting(btn) {
-      const status = $('[data-form-status]', step('business'));
-      status.hidden = true;
-      status.className = 'form__status';
-      const fields = meetingFields();
       btn.disabled = true;
-      const sent = await send(fields);
+      await sleep(1000);
       btn.disabled = false;
-      if (sent) {
-        $('[data-sent-title]', form).textContent = `Thank you, ${firstName('f-m-name')}. We'll be in touch shortly.`;
-        $('[data-sent-note]', form).textContent = `Someone from our team will contact you within one business day to set up a meeting. We've emailed a copy of your request to ${fields.email}.`;
-        fillSummary($('[data-sent-summary]', form), [
-          ['Company', fields.company],
-          ['Industry', fields.industry],
-          ['Cameras', plural(Number(fields.cameras), 'camera', 'cameras')],
-          ['Sites', plural(Number(fields.sites), 'site', 'sites')],
-        ]);
-        show('sent');
-        return;
-      }
-      // The send failed: offer the visitor's email app with everything filled in.
-      const lines = [
-        `Cameras: ${fields.cameras}`,
-        `Sites: ${fields.sites}`,
-        `Company: ${fields.company}`,
-        `Industry: ${fields.industry}`,
-        `What we do: ${fields.about}`,
-        fields.concerns && `On our mind: ${fields.concerns}`,
-        `Name: ${fields.name}`,
-        fields.role && `Role: ${fields.role}`,
-        `Email: ${fields.email}`,
-        `Phone: ${fields.phone}`,
-      ].filter(Boolean);
-      const link = document.createElement('a');
-      link.href = `mailto:${cfg.email}?subject=${encodeURIComponent(`Meeting request: ${fields.company}`)}&body=${encodeURIComponent(lines.join('\n'))}`;
-      link.textContent = 'Email it to us instead';
-      status.hidden = false;
-      status.classList.add('form__status--err');
-      status.textContent = "We couldn't send your request just now. ";
-      status.append(link, '. Your details are already filled in.');
-      status.focus();
+      $('[data-sent-title]', form).textContent = `Thank you, ${firstName('f-m-name')}. We'll be in touch shortly.`;
+      $('[data-sent-note]', form).textContent = `Someone from our team will contact you within one business day to set up a meeting. Demo: nothing was sent. On the live site, a copy would be emailed to ${field('f-m-email').value.trim()}.`;
+      fillSummary($('[data-sent-summary]', form), [
+        ['Company', field('f-m-company').value.trim()],
+        ['Industry', optionText(field('f-m-industry'))],
+        ['Cameras', plural(cameras.value(), 'camera', 'cameras')],
+        ['Sites', plural(sites.value() || 1, 'site', 'sites')],
+      ]);
+      show('sent');
     }
 
     /* Next, per step */

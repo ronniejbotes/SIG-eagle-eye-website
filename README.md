@@ -2,7 +2,7 @@
 
 Marketing website for SIG Eagle Eye: proactive labour intelligence for South African employers.
 
-It is a plain static site: HTML, CSS and JavaScript with no build step, plus one small PHP script (`api/lead.php`) that emails what people send from `/contact/`. Every page in this repository is complete and can be uploaded as it is. Motion uses GSAP, ScrollTrigger, SplitText and Lenis, which are included in `assets/js/vendor/`. Fonts are served from the site itself.
+It is a plain static site: HTML, CSS and JavaScript with no build step and nothing running on the server. Every page in this repository is complete and can be uploaded as it is. Motion uses GSAP, ScrollTrigger, SplitText and Lenis, which are included in `assets/js/vendor/`. Fonts are served from the site itself.
 
 ## Pages
 
@@ -22,10 +22,10 @@ It is a plain static site: HTML, CSS and JavaScript with no build step, plus one
 ## Preview locally
 
 ```bash
-php -S 127.0.0.1:8811
+python3 -m http.server 8811
 ```
 
-Then open http://127.0.0.1:8811. Use a local server rather than opening files directly, because the site uses root paths such as `/assets/...`. PHP's built-in server also runs `api/lead.php`; on localhost it writes the emails it would send to the terminal instead of mailing them. (`python3 -m http.server 8811` works for everything except sending from `/contact/`.)
+Then open http://127.0.0.1:8811. Use a local server rather than opening files directly, because the site uses root paths such as `/assets/...`.
 
 ## Editing
 
@@ -74,21 +74,18 @@ The homepage table "The record, industry by industry" (`#the-record`), the "In t
 
 The price and the limits are attributes on the `<form>` in `contact/index.html`: `data-price` (rand per camera a month), `data-max-cameras` and `data-max-sites`. The copy in the left-hand column of that page repeats them, so change both together. The behaviour lives in `assets/js/pages/contact.js` and the styles in `assets/css/page-contact.css`.
 
-**What is simulated.** The calendar books nothing, and the debit order creates no mandate: the bank fields have no `name` attribute, so the browser never sends them. The page says so on the debit order step.
-
-**Email.** Both routes post to `data-endpoint` (`/api/lead.php`). The script emails the details to the contact email with the visitor as Reply-To, then sends the visitor a confirmation: "someone will contact you shortly to set up a meeting" for larger operations, or the booking details for small sites. It uses PHP `mail()` from the contact email, so that mailbox must exist on the same host. If the send fails, the meeting route offers the visitor's email app with everything filled in, and the booking route shows the reference and asks them to email if anything changes.
+**It is a demo.** The whole funnel is simulated for show and tell, and it makes no network calls. The calendar books nothing, the debit order creates no mandate (the bank fields have no `name` attribute), and nothing is emailed or saved: both routes wait a moment and then show their confirmation. The page says so on the debit order step and on both confirmations.
 
 ## Deploying
 
-Upload everything **except** `tools/`, `.git/` and `README.md` to the web root (on Hostinger, `public_html`). The host needs PHP for `api/` (Hostinger has it). The included `.htaccess` serves the branded 404 page, forces HTTPS, sets security and caching headers, and blocks the maintenance files if they are uploaded by mistake. Uncomment the `www` rule in `.htaccess` once the domain points at the host.
+Upload everything **except** `tools/`, `.git/` and `README.md` to the web root (on Hostinger, `public_html`). The included `.htaccess` serves the branded 404 page, forces HTTPS, sets security and caching headers, and blocks the maintenance files if they are uploaded by mistake. Uncomment the `www` rule in `.htaccess` once the domain points at the host.
 
 ## Before launch
 
 - [ ] Confirm the domain and email (currently `https://www.sigeagleeye.co.za` and `info@sigeagleeye.co.za`) and run the `--set-domain` / `--set-email` commands if they differ.
 - [ ] Add the registered company name, registration number and physical address to `/privacy-policy/`, and name the Information Officer.
-- [ ] Create the `info@` mailbox on the host, then send a test from each route on `/contact/` and check both emails arrive (and not in spam).
 - [ ] Confirm the R100 per camera price and whether it includes VAT.
-- [ ] Replace the simulated calendar and debit order with real ones (a booking calendar and a DebiCheck provider), or switch small sites to the meeting route, before taking real bookings.
+- [ ] Before `/contact/` takes real enquiries: add a way to receive them (it sends nothing at the moment), and replace the simulated calendar and debit order with real ones (a booking calendar and a DebiCheck provider), or switch small sites to the meeting route.
 - [ ] Have the legal copy on `/compliance/`, `/for-employees/` and `/faq/`, and the court case summaries on the homepage and industry pages, checked by the SIG labour law team. It reflects the law as at September 2026 and is written as general information.
 - [ ] Submit `sitemap.xml` in Google Search Console.
 

@@ -852,13 +852,6 @@
   outline: 3px solid var(--sky);
   outline-offset: 2px;
 }
-.ct-honey {
-  position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
 .ct-small {
   margin: 0;
   text-align: center;

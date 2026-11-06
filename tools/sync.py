@@ -31,7 +31,7 @@ PARTIALS = TOOLS / "partials"
 CONFIG = TOOLS / "site.json"
 SKIP_DIRS = {"tools", ".git", "node_modules", ".claude"}
 NOT_IN_SITEMAP = {"/404.html"}
-TEXT_SUFFIXES = {".html", ".xml", ".txt", ".webmanifest", ".json"}
+TEXT_SUFFIXES = {".html", ".xml", ".txt", ".webmanifest", ".json", ".php"}
 
 SECTIONS = {
     "solution": ("/how-it-works/", "/compliance/", "/for-employees/"),

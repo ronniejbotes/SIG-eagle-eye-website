@@ -269,35 +269,53 @@
   }
 
   /* ---------------- Forms ---------------- */
+  const showError = (field, msg) => {
+    const wrap = field.closest('.field');
+    if (!wrap) return;
+    wrap.classList.add('has-error');
+    let err = $('.field__error', wrap);
+    if (!err) {
+      err = document.createElement('p');
+      err.className = 'field__error';
+      err.id = `${field.id}-error`;
+      wrap.appendChild(err);
+    }
+    err.textContent = msg;
+    field.setAttribute('aria-invalid', 'true');
+    field.setAttribute('aria-describedby', err.id);
+  };
+  const clearError = (field) => {
+    const wrap = field.closest('.field');
+    if (!wrap) return;
+    wrap.classList.remove('has-error');
+    const err = $('.field__error', wrap);
+    if (err) err.remove();
+    field.removeAttribute('aria-invalid');
+    field.removeAttribute('aria-describedby');
+  };
+  // Checks every required field inside root and returns the first one that fails.
+  const checkRequired = (root) => {
+    let firstBad = null;
+    $$('[required]', root).forEach((f) => {
+      clearError(f);
+      const empty = f.type === 'checkbox' ? !f.checked : !f.value.trim();
+      if (empty) {
+        showError(f, f.dataset.msg || 'Please complete this field.');
+        firstBad = firstBad || f;
+      } else if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.value.trim())) {
+        showError(f, 'Please enter a valid email address.');
+        firstBad = firstBad || f;
+      }
+    });
+    return firstBad;
+  };
+  SIG.forms = { showError, clearError, checkRequired };
+
   function initForms() {
     $$('form[data-lead-form]').forEach((form) => {
       const status = $('[data-form-status]', form);
       const endpoint = form.getAttribute('data-endpoint') || '';
       const email = form.getAttribute('data-email') || '';
-      const showError = (field, msg) => {
-        const wrap = field.closest('.field');
-        if (!wrap) return;
-        wrap.classList.add('has-error');
-        let err = $('.field__error', wrap);
-        if (!err) {
-          err = document.createElement('p');
-          err.className = 'field__error';
-          err.id = `${field.id}-error`;
-          wrap.appendChild(err);
-        }
-        err.textContent = msg;
-        field.setAttribute('aria-invalid', 'true');
-        field.setAttribute('aria-describedby', err.id);
-      };
-      const clearError = (field) => {
-        const wrap = field.closest('.field');
-        if (!wrap) return;
-        wrap.classList.remove('has-error');
-        const err = $('.field__error', wrap);
-        if (err) err.remove();
-        field.removeAttribute('aria-invalid');
-        field.removeAttribute('aria-describedby');
-      };
       $$('input, select, textarea', form).forEach((f) => f.addEventListener('input', () => clearError(f)));
 
       form.addEventListener('submit', async (e) => {
@@ -306,18 +324,7 @@
           status.hidden = true;
           status.className = 'form__status';
         }
-        let firstBad = null;
-        $$('[required]', form).forEach((f) => {
-          clearError(f);
-          const empty = f.type === 'checkbox' ? !f.checked : !f.value.trim();
-          if (empty) {
-            showError(f, f.dataset.msg || 'Please complete this field.');
-            firstBad = firstBad || f;
-          } else if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.value.trim())) {
-            showError(f, 'Please enter a valid email address.');
-            firstBad = firstBad || f;
-          }
-        });
+        const firstBad = checkRequired(form);
         if (firstBad) {
           firstBad.focus();
           return;

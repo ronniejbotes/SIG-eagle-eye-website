@@ -588,7 +588,6 @@
         pickers.forEach((p) => p.paint());
         prefillIndustry();
         $('[data-ct-industry]').dispatchEvent(new Event('change'));
-        $('[data-form-status]', step('business')).hidden = true;
         show('setup');
         renderRoute();
       }

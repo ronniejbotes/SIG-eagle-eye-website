@@ -3,8 +3,8 @@
  * Step 1 counts cameras and sites. A small setup (up to data-max-cameras cameras on
  * up to data-max-sites sites) books online: a pretend installation calendar, contact
  * details and a simulated DebiCheck debit order. Anything bigger tells us about the
- * business, and we contact them to set up a meeting. It is a demo: nothing is sent
- * anywhere, and both paths finish in the browser.
+ * business and picks a day, morning or afternoon, for us to call back and set up a
+ * meeting. It is a demo: nothing is sent anywhere, and both paths finish in the browser.
  * Industry links (?industry=retail) pre-select the industry, and the meeting path
  * previews what we'll look at for that industry.
  */
@@ -35,7 +35,7 @@
 
   const PATHS = {
     install: { steps: ['setup', 'date', 'details', 'debit', 'booked'], labels: ['Your setup', 'Installation date', 'Your details', 'Debit order', 'Booked'] },
-    meeting: { steps: ['setup', 'business', 'sent'], labels: ['Your setup', 'Your business', 'Request sent'] },
+    meeting: { steps: ['setup', 'business', 'callback', 'sent'], labels: ['Your setup', 'Your business', 'Call-back time', 'Request sent'] },
   };
 
   /* ---------------- Small helpers ---------------- */
@@ -49,7 +49,10 @@
     return new Date(y, m - 1, d);
   };
   const fmtLong = new Intl.DateTimeFormat('en-ZA', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  const fmtDay = new Intl.DateTimeFormat('en-ZA', { weekday: 'long', day: 'numeric', month: 'long' });
+  // en-ZA pads the day ("Monday, 09 November") when the year is left out, so build it from parts.
+  const fmtWeekday = new Intl.DateTimeFormat('en-ZA', { weekday: 'long' });
+  const fmtMonthName = new Intl.DateTimeFormat('en-ZA', { month: 'long' });
+  const fmtDay = { format: (d) => `${fmtWeekday.format(d)}, ${d.getDate()} ${fmtMonthName.format(d)}` };
   const fmtDate = new Intl.DateTimeFormat('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
   const fmtMonth = new Intl.DateTimeFormat('en-ZA', { month: 'long', year: 'numeric' });
   const optionText = (select) => (select && select.value && select.selectedOptions[0] ? select.selectedOptions[0].textContent.trim() : '');
@@ -145,7 +148,7 @@
     return { input, value, paint };
   }
 
-  /* ---------------- Pretend installation calendar ---------------- */
+  /* ---------------- Pretend calendars: installation dates and call-back times ---------------- */
   // South African public holidays, so the calendar never offers one.
   function holidays(year) {
     const out = new Set();
@@ -180,17 +183,42 @@
   const slotTaken = (key, t) => hash(`${key} ${t}`) % 3 === 0;
   const dayFull = (key) => hash(key) % 6 === 0 || SLOTS.every((t) => slotTaken(key, t));
 
-  function initCalendar(state) {
-    const root = $('[data-cal]');
+  // Installs start two working days out and open six weeks ahead, with some days and
+  // windows taken. Call-backs start the next working day, three weeks ahead, all open.
+  const INSTALL_CAL = {
+    lead: 2,
+    span: 42,
+    name: 'install_time',
+    slots: SLOTS.map((t) => ({ value: slotLabel(t), taken: (key) => slotTaken(key, t) })),
+    full: dayFull,
+    needDay: 'Please choose a day for the installation.',
+    needTime: 'Please choose an arrival window.',
+  };
+  const CALL_SLOTS = [
+    { value: 'morning', label: 'Morning', hours: '08:00–12:00' },
+    { value: 'afternoon', label: 'Afternoon', hours: '12:00–17:00' },
+  ];
+  const CALLBACK_CAL = {
+    lead: 1,
+    span: 21,
+    name: 'callback_time',
+    slots: CALL_SLOTS.map((s) => ({ value: s.value, label: s.label, note: s.hours })),
+    full: () => false,
+    needDay: 'Please choose a day for us to call you.',
+    needTime: 'Please choose morning or afternoon.',
+  };
+
+  // root is the step holding the calendar; the chosen day and slot go into pick.date and pick.time.
+  function initCalendar(root, pick, opts) {
     const grid = $('[data-cal-grid]', root);
     const month = $('[data-cal-month]', root);
     const prev = $('[data-cal-prev]', root);
     const next = $('[data-cal-next]', root);
-    const slots = $('[data-cal-slots]');
-    const slotGrid = $('[data-cal-slot-grid]');
-    const slotDay = $('[data-cal-day]');
-    const dateInput = $('[data-cal-date]');
-    const error = $('[data-cal-error]');
+    const slots = $('[data-cal-slots]', root);
+    const slotGrid = $('[data-cal-slot-grid]', root);
+    const slotDay = $('[data-cal-day]', root);
+    const dateInput = $('[data-cal-date]', root);
+    const error = $('[data-cal-error]', root);
 
     const holidayCache = new Map();
     const isHoliday = (d) => {
@@ -200,50 +228,55 @@
     };
     const isWorkday = (d) => d.getDay() !== 0 && d.getDay() !== 6 && !isHoliday(d);
 
-    // The earliest installation is two working days out; bookings open six weeks ahead.
+    // The first open day is opts.lead working days out; the calendar runs opts.span days from there.
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const first = new Date(today);
-    for (let n = 0; n < 2; ) {
+    for (let n = 0; n < opts.lead; ) {
       first.setDate(first.getDate() + 1);
       if (isWorkday(first)) n += 1;
     }
     const last = new Date(first);
-    last.setDate(last.getDate() + 42);
+    last.setDate(last.getDate() + opts.span);
     let view = new Date(first.getFullYear(), first.getMonth(), 1);
 
     const status = (d) => {
       if (d < first || d > last || !isWorkday(d)) return 'closed';
-      return dayFull(iso(d)) ? 'full' : 'open';
+      return opts.full(iso(d)) ? 'full' : 'open';
     };
 
     const renderSlots = () => {
-      slots.hidden = !state.date;
-      if (!state.date) return;
-      slotDay.textContent = fmtDay.format(fromIso(state.date));
+      slots.hidden = !pick.date;
+      if (!pick.date) return;
+      slotDay.textContent = fmtDay.format(fromIso(pick.date));
       slotGrid.innerHTML = '';
-      SLOTS.forEach((t) => {
-        const taken = slotTaken(state.date, t);
+      opts.slots.forEach((slot) => {
+        const taken = Boolean(slot.taken && slot.taken(pick.date));
+        const text = slot.label || slot.value;
         const label = document.createElement('label');
         label.className = 'fx-choice';
         const input = document.createElement('input');
         input.type = 'radio';
-        input.name = 'install_time';
-        input.value = slotLabel(t);
+        input.name = opts.name;
+        input.value = slot.value;
         input.disabled = taken;
-        input.checked = !taken && state.time === input.value;
+        input.checked = !taken && pick.time === input.value;
         input.addEventListener('change', () => {
-          state.time = input.value;
+          pick.time = input.value;
           error.hidden = true;
         });
         const span = document.createElement('span');
         if (taken) {
           const time = document.createElement('s');
-          time.textContent = slotLabel(t);
+          time.textContent = text;
           const note = document.createElement('small');
           note.textContent = 'Taken';
           span.append(time, note);
-        } else span.textContent = slotLabel(t);
+        } else if (slot.note) {
+          const note = document.createElement('small');
+          note.textContent = slot.note;
+          span.append(text, note);
+        } else span.textContent = text;
         label.append(input, span);
         slotGrid.appendChild(label);
       });
@@ -270,21 +303,21 @@
         b.disabled = st !== 'open';
         b.tabIndex = -1;
         if (key === iso(today)) b.classList.add('is-today');
-        b.setAttribute('aria-pressed', String(state.date === key));
+        b.setAttribute('aria-pressed', String(pick.date === key));
         b.setAttribute('aria-label', `${fmtDay.format(d)}${st === 'full' ? ', fully booked' : st === 'closed' ? ', not available' : ''}`);
         grid.appendChild(b);
         buttons.push(b);
       }
       // One tab stop for the whole month: the chosen day, or the first open one.
       const open = buttons.filter((b) => !b.disabled);
-      const stop = open.find((b) => b.dataset.date === (focusIso || state.date)) || open[0];
+      const stop = open.find((b) => b.dataset.date === (focusIso || pick.date)) || open[0];
       if (stop) stop.tabIndex = 0;
       if (focusIso && stop) stop.focus();
     };
 
     const select = (key) => {
-      state.date = key;
-      state.time = '';
+      pick.date = key;
+      pick.time = '';
       dateInput.value = key;
       error.hidden = true;
       render(key);
@@ -322,16 +355,16 @@
     return {
       check() {
         let msg = '';
-        if (!state.date) msg = 'Please choose a day for the installation.';
-        else if (!state.time) msg = 'Please choose an arrival window.';
+        if (!pick.date) msg = opts.needDay;
+        else if (!pick.time) msg = opts.needTime;
         error.textContent = msg;
         error.hidden = !msg;
-        if (msg) (state.date ? $('input:not(:disabled)', slotGrid) : $('.fx-day[tabindex="0"]', grid))?.focus();
+        if (msg) (pick.date ? $('input:not(:disabled)', slotGrid) : $('.fx-day[tabindex="0"]', grid))?.focus();
         return !msg;
       },
       reset() {
-        state.date = '';
-        state.time = '';
+        pick.date = '';
+        pick.time = '';
         dateInput.value = '';
         error.hidden = true;
         view = new Date(first.getFullYear(), first.getMonth(), 1);
@@ -353,7 +386,7 @@
     };
     const step = (name) => $(`[data-step="${name}"]`, form);
     const field = (id) => document.getElementById(id);
-    const state = { path: 'install', current: 'setup', date: '', time: '', reference: '' };
+    const state = { path: 'install', current: 'setup', date: '', time: '', reference: '', call: { date: '', time: '' } };
 
     /* Step 1: counts and the route they lead to */
     const routeBox = $('[data-fx-route]', form);
@@ -383,7 +416,7 @@
         routeBox.className = 'fx-route fx-route--meeting';
         routeBox.innerHTML = `<span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="${SPRITE}#i-users"/></svg></span>
           <div><p class="fx-route__title">Let's plan this with you</p>
-          <p>${plural(c, 'camera', 'cameras')} across ${plural(s, 'site', 'sites')} gets a rollout planned with our team. Tell us about your business and we'll set up a meeting.</p></div>`;
+          <p>${plural(c, 'camera', 'cameras')} across ${plural(s, 'site', 'sites')} gets a rollout planned with our team. Tell us about your business and pick a time for us to call you.</p></div>`;
       }
       if (state.current === 'setup') {
         state.path = r || 'install';
@@ -526,9 +559,14 @@
       btn.disabled = true;
       await sleep(1000);
       btn.disabled = false;
-      $('[data-sent-title]', form).textContent = `Thank you, ${firstName('f-m-name')}. We'll be in touch shortly.`;
-      $('[data-sent-note]', form).textContent = `Someone from our team will contact you within one business day to set up a meeting. Demo: nothing was sent. On the live site, a copy would be emailed to ${field('f-m-email').value.trim()}.`;
+      const day = fmtDay.format(fromIso(state.call.date));
+      const slot = CALL_SLOTS.find((s) => s.value === state.call.time);
+      const phone = field('f-m-phone').value.trim();
+      $('[data-sent-title]', form).textContent = `Thank you, ${firstName('f-m-name')}. We'll call you on ${day}, in the ${slot.value}.`;
+      $('[data-sent-note]', form).textContent = `Someone from our team will call you on ${phone} between ${slot.hours.replace('–', ' and ')} to set up a meeting. Demo: nothing was sent. On the live site, a copy would be emailed to ${field('f-m-email').value.trim()}.`;
       fillSummary($('[data-sent-summary]', form), [
+        ['Call back', `${fmtLong.format(fromIso(state.call.date))}, ${slot.value} (${slot.hours})`],
+        ['Phone', phone],
         ['Company', field('f-m-company').value.trim()],
         ['Industry', optionText(field('f-m-industry'))],
         ['Cameras', plural(cameras.value(), 'camera', 'cameras')],
@@ -538,7 +576,8 @@
     }
 
     /* Next, per step */
-    const calendar = initCalendar(state);
+    const calendar = initCalendar(step('date'), state, INSTALL_CAL);
+    const callback = initCalendar(step('callback'), state.call, CALLBACK_CAL);
     const NEXT = {
       setup() {
         const input = cameras.input;
@@ -550,7 +589,7 @@
         }
         state.path = route();
         if (state.path === 'meeting') {
-          $('[data-business-hint]', form).textContent = `With ${plural(cameras.value(), 'camera', 'cameras')} across ${plural(sites.value() || 1, 'site', 'sites')}, we'd rather plan it with you. A few details and we'll be in touch to set up a meeting.`;
+          $('[data-business-hint]', form).textContent = `With ${plural(cameras.value(), 'camera', 'cameras')} across ${plural(sites.value() || 1, 'site', 'sites')}, we'd rather plan it with you. A few details, then pick a time for us to call you.`;
           show('business');
         } else show('date');
       },
@@ -573,8 +612,13 @@
         }
         authorise();
       },
-      business(btn) {
-        if (checkStep(step('business'))) requestMeeting(btn);
+      business() {
+        if (!checkStep(step('business'))) return;
+        $('[data-callback-hint]', form).textContent = `Weekdays only. Choose a day, then morning or afternoon, and we'll call you on ${field('f-m-phone').value.trim()} to set up the meeting.`;
+        show('callback');
+      },
+      callback(btn) {
+        if (callback.check()) requestMeeting(btn);
       },
     };
 
@@ -585,6 +629,7 @@
       if (e.target.closest('[data-fx-restart]')) {
         form.reset();
         calendar.reset();
+        callback.reset();
         pickers.forEach((p) => p.paint());
         prefillIndustry();
         $('[data-ct-industry]').dispatchEvent(new Event('change'));

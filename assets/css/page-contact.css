@@ -513,6 +513,9 @@
   .fx-slots__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+  .fx-slots__grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .fx-choice {
   position: relative;
@@ -556,6 +559,9 @@
   border-color: var(--navy);
   background: linear-gradient(160deg, var(--navy-800), var(--navy));
   color: #fff;
+}
+.fx-choice input:checked + span small {
+  color: rgba(255, 255, 255, 0.72);
 }
 .fx-choice input:focus-visible + span {
   outline: 3px solid var(--sky);

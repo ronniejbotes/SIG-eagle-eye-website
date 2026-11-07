@@ -70,11 +70,11 @@ The homepage table "The record, industry by industry" (`#the-record`), the "In t
 `/contact/` opens with a picker: little camera tiles and site tiles, each with a number field for exact counts. What happens next depends on the answer:
 
 - **Small sites book online.** Up to 14 cameras on one site goes to a pretend installation calendar (weekdays, two working days out, six weeks ahead, South African public holidays closed, some days and arrival windows shown as taken), then contact and site details, then a debit order for R100 per camera a month, approved through a simulated DebiCheck request in the customer's banking app.
-- **Larger operations talk to the team.** 15 or more cameras, or more than one site, goes to a short form about the business. On sending, the visitor is told someone will contact them within one business day to set up a meeting.
+- **Larger operations talk to the team.** 15 or more cameras, or more than one site, goes to a short form about the business, then a pretend call-back calendar: a weekday (from the next working day, three weeks ahead, public holidays closed) and morning (08:00–12:00) or afternoon (12:00–17:00). On sending, the visitor is told when we'll call them to set up a meeting.
 
 The price and the limits are attributes on the `<form>` in `contact/index.html`: `data-price` (rand per camera a month), `data-max-cameras` and `data-max-sites`. The copy in the left-hand column of that page repeats them, so change both together. The behaviour lives in `assets/js/pages/contact.js` and the styles in `assets/css/page-contact.css`.
 
-**It is a demo.** The whole funnel is simulated for show and tell, and it makes no network calls. The calendar books nothing, the debit order creates no mandate (the bank fields have no `name` attribute), and nothing is emailed or saved: both routes wait a moment and then show their confirmation. The page says so on the debit order step and on both confirmations.
+**It is a demo.** The whole funnel is simulated for show and tell, and it makes no network calls. The calendars book nothing, the debit order creates no mandate (the bank fields have no `name` attribute), and nothing is emailed or saved: both routes wait a moment and then show their confirmation. The page says so on the debit order step and on both confirmations.
 
 ## Deploying
 

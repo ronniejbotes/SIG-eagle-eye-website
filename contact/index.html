@@ -30,7 +30,7 @@
   <script>document.documentElement.classList.replace('no-js','js');</script>
   <!-- /@include head -->
   <link rel="stylesheet" href="/assets/css/inner.css?v=145f60b9">
-  <link rel="stylesheet" href="/assets/css/page-contact.css?v=42d63ea5">
+  <link rel="stylesheet" href="/assets/css/page-contact.css?v=668e3e09">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -190,7 +190,7 @@
           </nav>
           <p class="eyebrow">Get started</p>
           <h1 class="h1 ph__title" id="page-title">Count your cameras. <span class="serif">We'll take it from there.</span></h1>
-          <p class="lede">Tell us how many cameras and sites you have. A small site can book its installation and set up a debit order right here. A larger operation gets a meeting with our team.</p>
+          <p class="lede">Tell us how many cameras and sites you have. A small site can book its installation and set up a debit order right here. A larger operation picks a time for our team to call.</p>
 
           <ul class="ct-routes" role="list">
             <li class="ct-route" data-route="install">
@@ -206,7 +206,7 @@
               <div>
                 <p class="ct-route__when mono">15 or more cameras, or more than one site</p>
                 <p class="ct-route__title">Talk to our team</p>
-                <p>Tell us about your business and we'll contact you to set up a meeting and plan the rollout.</p>
+                <p>Tell us about your business, then pick a day and a morning or afternoon for us to call you back.</p>
               </div>
             </li>
           </ul>
@@ -439,7 +439,7 @@
             <section class="fx-step" data-step="business" data-path="meeting" aria-labelledby="fx-business-title" hidden>
               <div class="fx-block">
                 <h2 class="fx-title" id="fx-business-title" tabindex="-1">Tell us about your business</h2>
-                <p class="fx-hint" data-business-hint>With a setup this size, we'd rather plan it with you. A few details and we'll be in touch to set up a meeting.</p>
+                <p class="fx-hint" data-business-hint>With a setup this size, we'd rather plan it with you. A few details, then pick a time for us to call you.</p>
               </div>
               <div class="form__row form__row--2">
                 <div class="field">
@@ -512,11 +512,38 @@
               </div>
               <div class="fx-nav">
                 <button class="btn btn--ghost" type="button" data-fx-back>Back</button>
-                <button class="btn btn--gold" type="button" data-fx-next>Request a meeting <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></button>
+                <button class="btn btn--gold" type="button" data-fx-next>Pick a call-back time <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></button>
               </div>
             </section>
 
-            <!-- 3b. Sent (larger operations) -->
+            <!-- 3b. Call-back day and morning or afternoon (larger operations). Pretend, like the installation calendar. -->
+            <section class="fx-step" data-step="callback" data-path="meeting" aria-labelledby="fx-callback-title" hidden>
+              <div class="fx-block">
+                <h2 class="fx-title" id="fx-callback-title" tabindex="-1">When should we call you?</h2>
+                <p class="fx-hint" data-callback-hint>Weekdays only. Choose a day, then morning or afternoon, and we'll call to set up the meeting.</p>
+              </div>
+              <div class="fx-cal" data-cal>
+                <div class="fx-cal__head">
+                  <button class="fx-cal__nav fx-cal__nav--prev" type="button" aria-label="Previous month" data-cal-prev><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-chevron-down"/></svg></button>
+                  <p class="fx-cal__month" aria-live="polite" data-cal-month></p>
+                  <button class="fx-cal__nav fx-cal__nav--next" type="button" aria-label="Next month" data-cal-next><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-chevron-down"/></svg></button>
+                </div>
+                <div class="fx-cal__dow mono" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+                <div class="fx-cal__grid" data-cal-grid></div>
+              </div>
+              <fieldset class="field fx-slots" data-cal-slots hidden>
+                <legend>Best time to call on <span data-cal-day></span></legend>
+                <div class="fx-slots__grid fx-slots__grid--2" data-cal-slot-grid></div>
+              </fieldset>
+              <input type="hidden" name="callback_date" data-cal-date>
+              <p class="field__error" role="alert" data-cal-error hidden></p>
+              <div class="fx-nav">
+                <button class="btn btn--ghost" type="button" data-fx-back>Back</button>
+                <button class="btn btn--gold" type="button" data-fx-next>Request a call back <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></button>
+              </div>
+            </section>
+
+            <!-- 4b. Sent (larger operations) -->
             <section class="fx-step" data-step="sent" data-path="meeting" aria-labelledby="fx-sent-title" hidden>
               <div class="fx-done">
                 <span class="fx-done__mark"><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-check"/></svg></span>
@@ -614,6 +641,6 @@
   <script src="/assets/js/vendor/lenis.min.js?v=e4bb975a" defer></script>
   <script src="/assets/js/site.js?v=d999a76a" defer></script>
   <script src="/assets/js/motion.js?v=8a868068" defer></script>
-  <script src="/assets/js/pages/contact.js?v=9cc3f577" defer></script>
+  <script src="/assets/js/pages/contact.js?v=43c5fd0c" defer></script>
 </body>
 </html>

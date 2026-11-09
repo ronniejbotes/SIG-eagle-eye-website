@@ -489,6 +489,10 @@ h4 {
   filter: blur(80px);
   opacity: 0.5;
 }
+/* A glow can be wider than a phone screen: keep it inside its section so it never widens the page */
+section:has(> .glow) {
+  overflow-x: clip;
+}
 .glow--sky {
   background: rgba(var(--sky-rgb), 0.45);
 }

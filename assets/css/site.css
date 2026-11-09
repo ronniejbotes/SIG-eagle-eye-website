@@ -489,6 +489,10 @@ h4 {
   filter: blur(80px);
   opacity: 0.5;
 }
+/* A glow can be wider than a phone screen: keep it inside its section so it never widens the page */
+section:has(> .glow) {
+  overflow-x: clip;
+}
 .glow--sky {
   background: rgba(var(--sky-rgb), 0.45);
 }
@@ -2053,4 +2057,74 @@ img.grade,
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+
+/* ===================================================================
+   Question bands and the always-on sign-up button
+   =================================================================== */
+.qband {
+  padding-block: clamp(72px, 10vw, 140px);
+  border-block: 2px solid var(--gold-400);
+  overflow: clip;
+}
+.qband__q {
+  margin: 0 0 clamp(28px, 4vw, 48px);
+  max-width: none;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 8vw, 7.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: #fff;
+}
+.qband__q .serif {
+  display: block;
+  font-size: 1.12em;
+  line-height: 1.04;
+}
+.qband__btn {
+  min-height: clamp(76px, 7vw, 100px);
+  padding: 22px clamp(40px, 5vw, 72px);
+  font-size: clamp(1.3rem, 2.4vw, 2.1rem);
+}
+.signup-fab {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 80;
+  min-height: 64px;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 14px 34px -8px rgba(2, 10, 28, 0.55);
+}
+.page-contact .signup-fab,
+.page-employees .signup-fab,
+.page-legal .signup-fab,
+.page-404 .signup-fab {
+  display: none;
+}
+@media (max-width: 720px) {
+  .signup-fab {
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    left: 12px;
+  }
+  /* Keep the end of the page clear of the fixed button */
+  body:not(.page-contact, .page-employees, .page-legal, .page-404) .site-footer {
+    padding-bottom: 96px;
+  }
+}
+@media print {
+  .signup-fab {
+    display: none;
+  }
+}
+.faq-hero__actions {
+  justify-content: center;
+  margin-bottom: 24px;
 }

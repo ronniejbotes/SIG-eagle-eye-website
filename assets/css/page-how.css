@@ -3,6 +3,21 @@
    record anatomy, discipline ladder, onboarding track
    ========================================================================== */
 
+/* ---------- Video ---------- */
+.how-video__frame {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+}
+.how-video__frame video {
+  width: 100%;
+  height: 100%;
+  background: var(--navy-950);
+}
+.how-video__note {
+  margin-top: 14px;
+  font-size: 0.85rem;
+}
+
 /* ---------- Hero ---------- */
 .how-hero__grid {
   display: grid;

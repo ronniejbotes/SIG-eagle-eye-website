@@ -666,7 +666,7 @@
   background: rgba(var(--gold-rgb), 0.28);
   box-shadow: 0 0 0 2px var(--gold-300);
 }
-.anatomy__clip.is-hl {
+.anatomy .anatomy__clip.is-hl {
   background: var(--navy-800);
 }
 .anatomy__notes {

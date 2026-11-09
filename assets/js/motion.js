@@ -352,7 +352,8 @@
 
   /* Headings rise line by line from behind a mask. */
   function initSplit(gsap) {
-    if (!window.SplitText) return;
+    // On a translated page the heading stays whole, or Google translates it line by line.
+    if (!window.SplitText || document.documentElement.classList.contains('is-translated')) return;
     document.querySelectorAll('[data-split]').forEach((el) => {
       window.SplitText.create(el, {
         type: 'lines',

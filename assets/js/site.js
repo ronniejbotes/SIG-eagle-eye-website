@@ -415,6 +415,80 @@
     });
   }
 
+  /* ---------------- Language picker ----------------
+     Google Translate does the translating. Its script only loads once someone has
+     picked a language; the choice lives in Google's own googtrans cookie, so it
+     follows them from page to page until they go back to English. */
+  const NO_TRANSLATE = /SIG Eagle Eye|Eagle Eye|DebiCheck|POPIA|CCMA/g;
+
+  const currentLang = () => {
+    const match = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([^;]+)/);
+    return match ? match[1] : 'en';
+  };
+
+  function setLang(code) {
+    // Google also sets the cookie on the parent domains, so clear every version of it.
+    const parts = window.location.hostname.split('.');
+    const domains = [''];
+    parts.forEach((_, i) => domains.push(`; domain=${parts.slice(i).join('.')}`, `; domain=.${parts.slice(i).join('.')}`));
+    domains.forEach((domain) => {
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain}`;
+    });
+    if (code !== 'en') document.cookie = `googtrans=/en/${code}; path=/; SameSite=Lax`;
+    window.location.reload();
+  }
+
+  // Keeps product and legal names as they are, in running text as well as the logo.
+  function protectNames() {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const found = [];
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      NO_TRANSLATE.lastIndex = 0;
+      if (NO_TRANSLATE.test(node.nodeValue) && !node.parentElement.closest('script, style, select, option, .notranslate')) found.push(node);
+    }
+    found.forEach((node) => {
+      const frag = document.createDocumentFragment();
+      const text = node.nodeValue;
+      let last = 0;
+      text.replace(NO_TRANSLATE, (name, at) => {
+        frag.append(text.slice(last, at));
+        const span = document.createElement('span');
+        span.className = 'notranslate';
+        span.translate = false;
+        span.textContent = name;
+        frag.append(span);
+        last = at + name.length;
+        return name;
+      });
+      frag.append(text.slice(last));
+      node.replaceWith(frag);
+    });
+  }
+
+  function initLanguage() {
+    const code = currentLang();
+    document.querySelectorAll('[data-lang-select]').forEach((select) => {
+      select.value = code;
+      select.addEventListener('change', () => setLang(select.value));
+    });
+    document.querySelectorAll('[data-lang-code]').forEach((el) => {
+      el.textContent = code.toUpperCase();
+    });
+    if (code === 'en') return;
+    protectNames();
+    const host = document.createElement('div');
+    host.id = 'gt-host';
+    host.className = 'gt-host notranslate';
+    host.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(host);
+    window.sigTranslateReady = () => new window.google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'gt-host');
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=sigTranslateReady';
+    script.async = true;
+    document.head.appendChild(script);
+  }
+
   function boot() {
     initTabs();
     initHeader();
@@ -424,6 +498,7 @@
     initLens();
     initBalance();
     initForms();
+    initLanguage();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitHudTags());
     else fitHudTags();
   }

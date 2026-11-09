@@ -26,8 +26,8 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preload" href="/assets/fonts/montserrat-normal-300-900.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/eb-garamond-italic-500-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/site.css?v=625d2d8f">
-  <script>document.documentElement.classList.replace('no-js','js');</script>
+  <link rel="stylesheet" href="/assets/css/site.css?v=95469ef2">
+  <script>document.documentElement.classList.replace('no-js','js');if(/(^|;\s*)googtrans=\/en\//.test(document.cookie))document.documentElement.classList.add('is-translated');</script>
   <!-- /@include head -->
   <link rel="stylesheet" href="/assets/css/inner.css?v=145f60b9">
   <link rel="stylesheet" href="/assets/css/page-faq.css?v=69418fea">
@@ -67,9 +67,10 @@
           { "@type": "Question", "name": "Can an employee refuse to be monitored?", "acceptedAnswer": { "@type": "Answer", "text": "Monitoring at work is generally lawful when it is limited to work areas, has a legitimate purpose and employees have been told about it. Employees with concerns can raise them with the employer, their union or the Information Officer, and can complain to the Information Regulator if they believe their information is mishandled." } },
           { "@type": "Question", "name": "Will a flag go on an employee's record?", "acceptedAnswer": { "@type": "Answer", "text": "A flag is not a disciplinary record. Only an issue that a person has reviewed and confirmed goes onto a record, and even then the first step is usually a conversation." } },
           { "@type": "Question", "name": "Can employees see what is recorded about them?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Under POPIA sections 23 and 24, employees can ask what personal information is held about them and ask for it to be corrected." } },
-          { "@type": "Question", "name": "How does pricing work?", "acceptedAnswer": { "@type": "Answer", "text": "It is a modular subscription. After a site assessment we recommend the modules your operation needs and quote per site, so a single store and a multi-site group each pay for what they use." } },
-          { "@type": "Question", "name": "What happens at a site assessment?", "acceptedAnswer": { "@type": "Answer", "text": "We walk your site with you: the zones, the risks, your existing camera coverage, your disciplinary code and the rules people already sign for. You get a recommendation of the modules you need and a quote per site." } },
-          { "@type": "Question", "name": "How long does it take to go live?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on the number of sites and how ready your policies are. The site assessment gives you a clear plan and timeline before you commit." } },
+          { "@type": "Question", "name": "What does patent pending mean?", "acceptedAnswer": { "@type": "Answer", "text": "A patent application has been filed for SIG Eagle Eye and is still being examined. Until it is granted, the correct description is patent pending." } },
+          { "@type": "Question", "name": "How does pricing work?", "acceptedAnswer": { "@type": "Answer", "text": "It's R100 per camera a month by debit order, whatever the size of your operation. You can sign up online, or ask us to call you first." } },
+          { "@type": "Question", "name": "What happens at a site assessment?", "acceptedAnswer": { "@type": "Answer", "text": "We walk your site with you: the zones, the risks, your existing camera coverage, your disciplinary code and the rules people already sign for. We use it to set Eagle Eye up around your site." } },
+          { "@type": "Question", "name": "How long does it take to go live?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on the number of sites and how ready your policies are. You pick your installation date when you sign up, and we agree the plan for any further sites with you." } },
           { "@type": "Question", "name": "Does it work across several sites?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. It scales across multiple sites, with rules configured per site and reporting site by site or across the whole group." } }
         ]
       }
@@ -82,9 +83,9 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" data-site-header>
     <div class="container site-header__inner">
-      <a class="brand" href="/" aria-label="SIG Eagle Eye home">
+      <a class="brand" href="/" aria-label="SIG Eagle Eye, patent pending. Home">
         <img class="brand__shield" src="/assets/img/brand/shield-96.webp" width="87" height="96" alt="">
-        <span class="brand__word"><span class="brand__sig">SIG</span> <span class="brand__eagle">EAGLE EYE</span></span>
+        <span class="brand__text"><span class="brand__word notranslate" translate="no"><span class="brand__sig">SIG</span> <span class="brand__eagle">EAGLE EYE<span class="brand__tm">TM</span></span></span><span class="brand__pp">Patent pending</span></span>
       </a>
       <nav class="nav" aria-label="Main">
         <ul class="nav__list">
@@ -144,7 +145,8 @@
           <li class="nav__item"><a class="nav__link" href="/contact/">Contact</a></li>
         </ul>
       </nav>
-      <a class="btn btn--gold btn--sm header-cta" href="/contact/">Book a site assessment</a>
+      <label class="lang" data-lang><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-globe"/></svg><span class="lang__code mono notranslate" translate="no" data-lang-code>EN</span><select class="lang__select notranslate" translate="no" aria-label="Choose a language" data-lang-select><option value="en">English</option><option value="af">Afrikaans</option><option value="zu">isiZulu</option><option value="xh">isiXhosa</option><option value="st">Sesotho</option><option value="tn">Setswana</option><option value="nso">Sepedi</option><option value="ts">Xitsonga</option><option value="ss">siSwati</option><option value="ve">Tshivenda</option><option value="nr">isiNdebele</option><option value="fr">Français</option><option value="pt">Português</option></select></label>
+      <a class="btn btn--gold btn--sm header-cta" href="/contact/">Sign up</a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
         <span class="visually-hidden">Menu</span>
         <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -179,8 +181,9 @@
       </ul>
     </nav>
     <div class="mobile-menu__foot">
-      <a class="btn btn--gold" href="/contact/">Book a site assessment <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
-      <p class="mobile-menu__note">Human-led. Legally guided. Built for South African workplaces.</p>
+      <a class="btn btn--gold" href="/contact/">Sign up <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+      <label class="lang lang--menu" data-lang><span class="lang__label">Language</span><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-globe"/></svg><span class="lang__code mono notranslate" translate="no" data-lang-code>EN</span><select class="lang__select notranslate" translate="no" aria-label="Choose a language" data-lang-select><option value="en">English</option><option value="af">Afrikaans</option><option value="zu">isiZulu</option><option value="xh">isiXhosa</option><option value="st">Sesotho</option><option value="tn">Setswana</option><option value="nso">Sepedi</option><option value="ts">Xitsonga</option><option value="ss">siSwati</option><option value="ve">Tshivenda</option><option value="nr">isiNdebele</option><option value="fr">Français</option><option value="pt">Português</option></select></label>
+      <p class="mobile-menu__note">Patent pending. Human-led. Legally guided. Built for South African workplaces.</p>
     </div>
   </div>
   <!-- /@include header -->
@@ -196,7 +199,7 @@
             <li><span aria-current="page">FAQ</span></li>
           </ol>
         </nav>
-        <p class="eyebrow">Frequently asked questions</p>
+        <p class="eyebrow">Frequently asked questions · Patent pending</p>
         <h1 class="h1 ph__title" id="page-title">Ask us anything. <span class="serif">Straight answers.</span></h1>
         <p class="lede">The legal, practical and commercial questions employers ask in the first meeting, and the ones their employees ask after it.</p>
         <div class="faq-search glass" role="search">
@@ -227,7 +230,7 @@
             <li><a href="#employees" data-faq-link>For employees</a></li>
             <li><a href="#setup" data-faq-link>Setup &amp; pricing</a></li>
           </ol>
-          <a class="btn btn--navy btn--sm faq-nav__cta" href="/contact/">Ask us directly <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+          <a class="btn btn--navy btn--sm faq-nav__cta" href="/contact/#speak">Ask us directly <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
         </nav>
 
         <div class="faq-groups">
@@ -342,17 +345,21 @@
           <div class="faq-group" id="setup" data-faq-group="setup">
             <h2 class="faq-group__title"><span class="icon-tile icon-tile--gold"><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-coins"/></svg></span>Setup &amp; pricing</h2>
             <div class="accordion">
+              <details class="accordion__item" id="patent-pending" data-faq-item>
+                <summary>What does patent pending mean?<span class="accordion__icon" aria-hidden="true"></span></summary>
+                <div class="accordion__body"><p>A patent application has been filed for SIG Eagle Eye and is still being examined. Until it is granted, the correct description is patent pending.</p></div>
+              </details>
               <details class="accordion__item" id="pricing" data-faq-item>
                 <summary>How does pricing work?<span class="accordion__icon" aria-hidden="true"></span></summary>
-                <div class="accordion__body"><p>It is a modular subscription. After a site assessment we recommend the modules your operation needs and quote per site, so a single store and a multi-site group each pay for what they use.</p></div>
+                <div class="accordion__body"><p>It's R100 per camera a month by debit order, whatever the size of your operation. You can sign up online, or ask us to call you first.</p></div>
               </details>
               <details class="accordion__item" id="site-assessment" data-faq-item>
                 <summary>What happens at a site assessment?<span class="accordion__icon" aria-hidden="true"></span></summary>
-                <div class="accordion__body"><p>We walk your site with you: the zones, the risks, your existing camera coverage, your disciplinary code and the rules people already sign for. You get a recommendation of the modules you need and a quote per site. <a href="/contact/">Book one here</a>.</p></div>
+                <div class="accordion__body"><p>We walk your site with you: the zones, the risks, your existing camera coverage, your disciplinary code and the rules people already sign for. We use it to set Eagle Eye up around your site. <a href="/contact/">Sign up here</a>.</p></div>
               </details>
               <details class="accordion__item" id="go-live" data-faq-item>
                 <summary>How long does it take to go live?<span class="accordion__icon" aria-hidden="true"></span></summary>
-                <div class="accordion__body"><p>It depends on the number of sites and how ready your policies are. The site assessment gives you a clear plan and timeline before you commit.</p></div>
+                <div class="accordion__body"><p>It depends on the number of sites and how ready your policies are. You pick your installation date when you sign up, and we agree the plan for any further sites with you.</p></div>
               </details>
               <details class="accordion__item" id="multi-site" data-faq-item>
                 <summary>Does it work across several sites?<span class="accordion__icon" aria-hidden="true"></span></summary>
@@ -364,7 +371,7 @@
           <div class="faq-empty" data-faq-empty hidden>
             <p class="h3">No answers match that search.</p>
             <p>Try another word, or ask us directly. We usually reply within one business day.</p>
-            <a class="btn btn--navy" href="/contact/">Ask your question <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+            <a class="btn btn--navy" href="/contact/#speak">Ask your question <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
           </div>
         </div>
       </div>
@@ -377,10 +384,10 @@
         <div>
           <p class="eyebrow">Still wondering?</p>
           <h2 class="h2" id="cta-title">The best answers are <span class="serif">on your own site.</span></h2>
-          <p class="lede">Book a site assessment and ask us anything in person, with your floor, your rules and your people in front of us.</p>
+          <p class="lede">Sign up, or ask us to call you first. We'll answer anything about your floor, your rules and your people.</p>
         </div>
         <div class="actions">
-          <a class="btn btn--gold" href="/contact/">Book a site assessment <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+          <a class="btn btn--gold" href="/contact/">Sign up <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
         </div>
       </div>
     </section>
@@ -391,12 +398,12 @@
     <div class="container">
       <div class="footer__grid">
         <div class="footer__brand">
-          <a class="brand" href="/" aria-label="SIG Eagle Eye home">
+          <a class="brand" href="/" aria-label="SIG Eagle Eye, patent pending. Home">
             <img class="brand__shield" src="/assets/img/brand/shield-200.webp" width="181" height="200" alt="" loading="lazy">
-            <span class="brand__word"><span class="brand__sig">SIG</span> <span class="brand__eagle">EAGLE EYE</span></span>
+            <span class="brand__text"><span class="brand__word notranslate" translate="no"><span class="brand__sig">SIG</span> <span class="brand__eagle">EAGLE EYE<span class="brand__tm">TM</span></span></span><span class="brand__pp">Patent pending</span></span>
           </a>
-          <p class="footer__blurb">Proactive labour intelligence for South African employers. AI-powered behavioural analytics, classified in line with labour law and always reviewed by a person.</p>
-          <a class="btn btn--gold btn--sm" href="/contact/">Book a site assessment <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+          <p class="footer__blurb">Proactive labour intelligence for South African employers. AI-powered behavioural analytics, classified in line with labour law and always reviewed by a person. Patent pending.</p>
+          <a class="btn btn--gold btn--sm" href="/contact/">Sign up <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
         </div>
         <div>
           <h2 class="footer__heading">Solution</h2>
@@ -421,18 +428,18 @@
         <div>
           <h2 class="footer__heading">Contact</h2>
           <ul class="footer__list">
-            <li><a href="/contact/">Book a site assessment</a></li>
+            <li><a href="/contact/">Sign up</a></li>
             <li><a href="mailto:info@sigeagleeye.co.za">info@sigeagleeye.co.za</a></li>
             <li><a href="/privacy-policy/">Privacy policy</a></li>
           </ul>
         </div>
       </div>
       <div class="footer__legal">
-        <p>&copy; 2026 SIG Eagle Eye. All rights reserved.</p>
-        <p>Information on this website is general in nature and is not legal advice.</p>
+        <p>&copy; 2026 SIG Eagle Eye. All rights reserved. SIG Eagle Eye is patent pending.</p>
+        <p>Information on this website is general in nature and is not legal advice. Other languages are translated automatically by Google and may not be exact; the English text is the official version.</p>
       </div>
     </div>
-    <span class="footer__word" aria-hidden="true" data-footer-word>EAGLE EYE</span>
+    <span class="footer__word notranslate" translate="no" aria-hidden="true" data-footer-word>EAGLE EYE<span class="footer__tm">TM</span></span>
   </footer>
   <!-- /@include footer -->
 
@@ -440,8 +447,8 @@
   <script src="/assets/js/vendor/ScrollTrigger.min.js?v=5445d0e9" defer></script>
   <script src="/assets/js/vendor/SplitText.min.js?v=8b363297" defer></script>
   <script src="/assets/js/vendor/lenis.min.js?v=e4bb975a" defer></script>
-  <script src="/assets/js/site.js?v=d999a76a" defer></script>
-  <script src="/assets/js/motion.js?v=8a868068" defer></script>
+  <script src="/assets/js/site.js?v=d2e6d30a" defer></script>
+  <script src="/assets/js/motion.js?v=c1323e49" defer></script>
   <script src="/assets/js/pages/faq.js?v=c217592b" defer></script>
 </body>
 </html>

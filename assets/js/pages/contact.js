@@ -1,12 +1,12 @@
 /**
- * Contact: the get-started funnel.
- * Step 1 counts cameras and sites. A small setup (up to data-max-cameras cameras on
- * up to data-max-sites sites) books online: a pretend installation calendar, contact
- * details and a simulated DebiCheck debit order. Anything bigger tells us about the
- * business and picks a day, morning or afternoon, for us to call back and set up a
- * meeting. It is a demo: nothing is sent anywhere, and both paths finish in the browser.
- * Industry links (?industry=retail) pre-select the industry, and the meeting path
- * previews what we'll look at for that industry.
+ * Contact: the sign-up funnel.
+ * Everyone signs up the same way, whatever the size: count cameras and sites, pick a
+ * date on a pretend installation calendar, give contact details and set up a simulated
+ * DebiCheck debit order. Nothing about the sign-up is sent anywhere yet.
+ * "Want to speak to us first?" leaves the sign-up at any step: it asks about the business
+ * and for a call-back day, morning or afternoon, then emails SIG through api/lead.php.
+ * Industry links (?industry=retail) pre-select the industry, and /contact/#speak opens
+ * "Want to speak to us first?" straight away.
  */
 (() => {
   const SIG = (window.SIG = window.SIG || {});
@@ -35,7 +35,7 @@
 
   const PATHS = {
     install: { steps: ['setup', 'date', 'details', 'debit', 'booked'], labels: ['Your setup', 'Installation date', 'Your details', 'Debit order', 'Booked'] },
-    meeting: { steps: ['setup', 'business', 'callback', 'sent'], labels: ['Your setup', 'Your business', 'Call-back time', 'Request sent'] },
+    speak: { steps: ['business', 'callback', 'sent'], labels: ['Your business', 'Call-back time', 'Request sent'] },
   };
 
   /* ---------------- Small helpers ---------------- */
@@ -73,7 +73,7 @@
     if (!select || !list) return;
     const render = () => {
       const key = PREVIEW[select.value] ? select.value : 'other';
-      title.textContent = NAMES[key] ? `For ${NAMES[key]} we'll look at` : "In the meeting we'll look at";
+      title.textContent = NAMES[key] ? `For ${NAMES[key]} we'll look at` : "When we speak we'll look at";
       list.innerHTML = '';
       PREVIEW[key].forEach((text) => {
         const li = document.createElement('li');
@@ -381,48 +381,30 @@
     const card = form.closest('[data-fx-card]') || form;
     const cfg = {
       price: Number(form.dataset.price) || 100,
-      maxCameras: Number(form.dataset.maxCameras) || 14,
-      maxSites: Number(form.dataset.maxSites) || 1,
+      endpoint: form.dataset.endpoint,
+      email: form.dataset.email,
     };
     const step = (name) => $(`[data-step="${name}"]`, form);
     const field = (id) => document.getElementById(id);
-    const state = { path: 'install', current: 'setup', date: '', time: '', reference: '', call: { date: '', time: '' } };
+    const state = { path: 'install', current: 'setup', returnTo: 'setup', busy: false, date: '', time: '', reference: '', call: { date: '', time: '' } };
 
-    /* Step 1: counts and the route they lead to */
-    const routeBox = $('[data-fx-route]', form);
-    const nextLabel = $('[data-fx-next-label]', form);
+    /* Step 1: counts and what they come to */
+    const totalBox = $('[data-fx-total]', form);
     const routeCards = $$('.ct-route');
-    const pickers = $$('[data-picker]', form).map((el) => initPicker(el, () => renderRoute()));
+    const speakRow = $('[data-fx-speak-row]', form);
+    const pickers = $$('[data-picker]', form).map((el) => initPicker(el, () => renderTotal()));
     const [cameras, sites] = pickers;
-    const route = () => {
+    const manySites = () => (sites.value() || 1) > 1;
+    function renderTotal() {
       const c = cameras.value();
-      if (!c) return null;
-      return c <= cfg.maxCameras && (sites.value() || 1) <= cfg.maxSites ? 'install' : 'meeting';
-    };
-    function renderRoute() {
-      const r = route();
-      const c = cameras.value();
-      const s = sites.value() || 1;
-      routeCards.forEach((li) => li.classList.toggle('is-active', li.dataset.route === r));
-      routeCards.forEach((li) => li.classList.toggle('is-dim', Boolean(r) && li.dataset.route !== r));
-      routeBox.hidden = !r;
-      nextLabel.textContent = r === 'install' ? 'Choose an installation date' : r === 'meeting' ? 'Tell us about your business' : 'Continue';
-      if (r === 'install') {
-        routeBox.className = 'fx-route fx-route--install';
-        routeBox.innerHTML = `<span class="icon-tile icon-tile--gold"><svg class="icon" aria-hidden="true"><use href="${SPRITE}#i-calendar"/></svg></span>
-          <div><p class="fx-route__title">You can book online</p>
-          <p>${plural(c, 'camera', 'cameras')} × ${rand(cfg.price)} = <strong>${rand(c * cfg.price)} a month</strong>, by debit order. Pick a date and we'll install.</p></div>`;
-      } else if (r === 'meeting') {
-        routeBox.className = 'fx-route fx-route--meeting';
-        routeBox.innerHTML = `<span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="${SPRITE}#i-users"/></svg></span>
-          <div><p class="fx-route__title">Let's plan this with you</p>
-          <p>${plural(c, 'camera', 'cameras')} across ${plural(s, 'site', 'sites')} gets a rollout planned with our team. Tell us about your business and pick a time for us to call you.</p></div>`;
-      }
-      if (state.current === 'setup') {
-        state.path = r || 'install';
-        progress();
-      }
+      totalBox.hidden = !c;
+      if (!c) return;
+      const across = manySites() ? ` across ${plural(sites.value(), 'site', 'sites')}` : '';
+      totalBox.innerHTML = `<span class="icon-tile icon-tile--gold"><svg class="icon" aria-hidden="true"><use href="${SPRITE}#i-calendar"/></svg></span>
+        <div><p class="fx-route__title">You can sign up now</p>
+        <p>${plural(c, 'camera', 'cameras')}${across} × ${rand(cfg.price)} = <strong>${rand(c * cfg.price)} a month</strong>, by debit order. Pick a date and we'll install.</p></div>`;
     }
+    const paintRoutes = () => routeCards.forEach((li) => li.classList.toggle('is-active', li.dataset.route === state.path));
 
     /* Progress, step switching and focus */
     const count = $('[data-fx-count]', form);
@@ -437,28 +419,49 @@
       label.textContent = labels[i];
       bar.style.width = `${done ? 100 : Math.max(6, (i / total) * 100)}%`;
     }
-    function show(name) {
-      $$('[data-step]', form).forEach((s) => (s.hidden = s.dataset.step !== name));
-      state.current = name;
-      progress();
-      const el = step(name);
+    function scrollToCard(always) {
       const header = $('[data-site-header]');
       const top = card.getBoundingClientRect().top;
       const offset = (header ? header.offsetHeight : 76) + 16;
-      if (top < offset) {
+      if (always || top < offset) {
         const y = top + window.scrollY - offset;
         if (SIG.lenis) SIG.lenis.scrollTo(y, { immediate: reduceMotion.matches });
         else window.scrollTo({ top: y, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
       }
+    }
+    function show(name) {
+      $$('[data-step]', form).forEach((s) => (s.hidden = s.dataset.step !== name));
+      state.current = name;
+      progress();
+      speakRow.hidden = state.path !== 'install' || name === 'booked';
+      const el = step(name);
+      scrollToCard();
       $('.fx-title', el).focus({ preventScroll: true });
       if (window.gsap && !reduceMotion.matches) {
         window.gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', clearProps: 'opacity,transform' });
       }
     }
     const back = () => {
+      // The first "speak to us" step goes back to wherever they were in the sign-up.
+      if (state.path === 'speak' && state.current === 'business') {
+        state.path = 'install';
+        paintRoutes();
+        show(state.returnTo);
+        return;
+      }
       const { steps } = PATHS[state.path];
       show(steps[Math.max(0, steps.indexOf(state.current) - 1)]);
     };
+    function speak() {
+      if (state.busy) return;
+      if (state.path === 'install') {
+        state.returnTo = state.current === 'booked' ? 'setup' : state.current;
+        state.path = 'speak';
+        paintRoutes();
+        show('business');
+      }
+      scrollToCard(true);
+    }
 
     /* Checks beyond "is it filled in" */
     const checkPhone = (input) => {
@@ -509,6 +512,8 @@
       const text = $('[data-debit-wait-text]', form);
       const bank = $('[data-debit-bank]', form).value;
       const total = rand(cameras.value() * cfg.price);
+      state.busy = true;
+      speakRow.hidden = true;
       fields.hidden = true;
       wait.hidden = false;
       wait.classList.remove('is-approved');
@@ -520,12 +525,13 @@
       text.textContent = 'Finishing your booking…';
       state.reference = `SIG-${Date.now().toString(36).slice(-3).toUpperCase()}${Math.random().toString(36).slice(2, 5).toUpperCase()}`;
       await sleep(1000);
+      state.busy = false;
       booked(bank);
       fields.hidden = false;
       wait.hidden = true;
     }
 
-    /* The two finish lines. Nothing is sent anywhere: this is a demo. */
+    /* The two finish lines. The sign-up is a demo; a call-back request really is emailed. */
     const fillSummary = (dl, rows) => {
       dl.innerHTML = '';
       rows.forEach(([term, value]) => {
@@ -540,37 +546,82 @@
     const firstName = (id) => field(id).value.trim().split(/\s+/)[0];
 
     function booked(bank) {
-      const email = field('f-i-email').value.trim();
       const acct = account.value;
+      const many = manySites();
       $('[data-booked-title]', form).textContent = `You're booked, ${firstName('f-i-name')}.`;
       $('[data-booked-ref]', form).textContent = state.reference;
       fillSummary($('[data-booked-summary]', form), [
-        ['Installation', `${fmtLong.format(fromIso(state.date))}, arriving ${state.time}`],
-        ['Site', field('f-i-address').value.trim()],
+        [many ? 'First installation' : 'Installation', `${fmtLong.format(fromIso(state.date))}, arriving ${state.time}`],
+        [many ? 'First site' : 'Site', field('f-i-address').value.trim()],
         ['Cameras', plural(cameras.value(), 'camera', 'cameras')],
+        ['Sites', many ? plural(sites.value(), 'site', 'sites') : ''],
         ['Debit order', `${rand(cameras.value() * cfg.price)} a month on the ${ordinal(debitDay())}, from ${fmtDate.format(firstDebit())}`],
         ['Account', `${bank} ••••${acct.slice(-4)}`],
       ]);
-      $('[data-booked-note]', form).textContent = `Demo: nothing was booked or sent. On the live site, these details would be emailed to ${email}.`;
+      $('[data-booked-note]', form).textContent = 'Demo: nothing was booked and no debit order was created.';
       show('booked');
     }
 
-    async function requestMeeting(btn) {
-      btn.disabled = true;
-      await sleep(1000);
-      btn.disabled = false;
-      const day = fmtDay.format(fromIso(state.call.date));
+    async function send(fields) {
+      const body = new FormData();
+      Object.entries(fields).forEach(([k, v]) => body.append(k, v));
+      try {
+        const res = await fetch(cfg.endpoint, { method: 'POST', body, headers: { Accept: 'application/json' } });
+        if (!res.ok) return false;
+        const json = await res.json();
+        return json.ok === true;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    async function requestCallback(btn) {
+      const status = $('[data-form-status]', step('callback'));
+      status.hidden = true;
+      const date = fromIso(state.call.date);
       const slot = CALL_SLOTS.find((s) => s.value === state.call.time);
-      const phone = field('f-m-phone').value.trim();
-      $('[data-sent-title]', form).textContent = `Thank you, ${firstName('f-m-name')}. We'll call you on ${day}, in the ${slot.value}.`;
-      $('[data-sent-note]', form).textContent = `Someone from our team will call you on ${phone} between ${slot.hours.replace('–', ' and ')} to set up a meeting. Demo: nothing was sent. On the live site, a copy would be emailed to ${field('f-m-email').value.trim()}.`;
+      const when = `${fmtLong.format(date)}, ${slot.value} (${slot.hours})`;
+      const c = cameras.value();
+      const fields = {
+        company_website: field('f-website').value,
+        callback: when,
+        name: field('f-m-name').value.trim(),
+        phone: field('f-m-phone').value.trim(),
+        email: field('f-m-email').value.trim(),
+        role: field('f-m-role').value.trim(),
+        company: field('f-m-company').value.trim(),
+        // The value, not the label: the label may be translated on screen.
+        industry: field('f-m-industry').value,
+        cameras: c ? String(c) : '',
+        sites: c ? String(sites.value() || 1) : '',
+        about: field('f-m-about').value.trim(),
+        concerns: $$('input[name="concerns"]:checked', form).map((box) => box.value).join(', '),
+        consent: 'yes',
+      };
+      btn.disabled = true;
+      const sent = await send(fields);
+      btn.disabled = false;
+      if (!sent) {
+        // The send failed: offer the visitor's email app with everything filled in.
+        const text = [`Please call me back: ${when}`, `Name: ${fields.name}`, `Phone: ${fields.phone}`, `Company: ${fields.company}`, `What we do: ${fields.about}`].join('\n');
+        const link = document.createElement('a');
+        link.href = `mailto:${cfg.email}?subject=${encodeURIComponent(`Call back request: ${fields.company}`)}&body=${encodeURIComponent(text)}`;
+        link.textContent = 'email your request to us';
+        status.className = 'form__status form__status--err';
+        status.textContent = 'We could not send that. Please try again, or ';
+        status.append(link, '.');
+        status.hidden = false;
+        return;
+      }
+      $('[data-sent-title]', form).textContent = `Thank you, ${firstName('f-m-name')}. We'll call you on ${fmtDay.format(date)}, in the ${slot.value}.`;
+      $('[data-sent-note]', form).textContent = `Someone from our team will call you on ${fields.phone} between ${slot.hours.replace('–', ' and ')} to talk it through.`;
       fillSummary($('[data-sent-summary]', form), [
-        ['Call back', `${fmtLong.format(fromIso(state.call.date))}, ${slot.value} (${slot.hours})`],
-        ['Phone', phone],
-        ['Company', field('f-m-company').value.trim()],
+        ['Call back', when],
+        ['Phone', fields.phone],
+        ['Company', fields.company],
         ['Industry', optionText(field('f-m-industry'))],
-        ['Cameras', plural(cameras.value(), 'camera', 'cameras')],
-        ['Sites', plural(sites.value() || 1, 'site', 'sites')],
+        ['Cameras', c ? plural(c, 'camera', 'cameras') : ''],
+        ['Sites', c ? plural(sites.value() || 1, 'site', 'sites') : ''],
       ]);
       show('sent');
     }
@@ -587,11 +638,16 @@
           input.focus();
           return;
         }
-        state.path = route();
-        if (state.path === 'meeting') {
-          $('[data-business-hint]', form).textContent = `With ${plural(cameras.value(), 'camera', 'cameras')} across ${plural(sites.value() || 1, 'site', 'sites')}, we'd rather plan it with you. A few details, then pick a time for us to call you.`;
-          show('business');
-        } else show('date');
+        const many = manySites();
+        $('[data-date-hint]', form).textContent = many
+          ? 'Weekdays only. This is when we start at your first site. Choose a day, then a window for our technician to arrive.'
+          : 'Weekdays only. Choose a day, then a window for our technician to arrive.';
+        $('[data-details-title]', form).textContent = many ? 'Where do we start?' : 'Where are we installing?';
+        $('[data-details-hint]', form).textContent = many
+          ? "We'll start at this site, then agree dates for your other sites with you."
+          : "So our technician can find you and let you know when they're on the way.";
+        $('[data-address-label]', form).textContent = many ? 'Address of your first site' : 'Site address';
+        show('date');
       },
       date() {
         if (calendar.check()) show('details');
@@ -614,11 +670,11 @@
       },
       business() {
         if (!checkStep(step('business'))) return;
-        $('[data-callback-hint]', form).textContent = `Weekdays only. Choose a day, then morning or afternoon, and we'll call you on ${field('f-m-phone').value.trim()} to set up the meeting.`;
+        $('[data-callback-hint]', form).textContent = `Weekdays only. Choose a day, then morning or afternoon, and we'll call you on ${field('f-m-phone').value.trim()}.`;
         show('callback');
       },
       callback(btn) {
-        if (callback.check()) requestMeeting(btn);
+        if (callback.check()) requestCallback(btn);
       },
     };
 
@@ -633,8 +689,12 @@
         pickers.forEach((p) => p.paint());
         prefillIndustry();
         $('[data-ct-industry]').dispatchEvent(new Event('change'));
+        $('[data-form-status]', step('callback')).hidden = true;
+        state.path = 'install';
+        paintRoutes();
         show('setup');
-        renderRoute();
+        renderTotal();
+        if (window.location.hash) window.history.replaceState(null, '', window.location.pathname + window.location.search);
       }
     });
     // Enter in a single-line field moves on, like a normal form.
@@ -647,8 +707,14 @@
     form.addEventListener('submit', (e) => e.preventDefault());
     form.addEventListener('input', (e) => SIG.forms.clearError(e.target));
     form.addEventListener('change', (e) => SIG.forms.clearError(e.target));
+    $$('[data-fx-speak]').forEach((btn) => btn.addEventListener('click', speak));
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#speak') speak();
+    });
 
-    renderRoute();
+    renderTotal();
+    paintRoutes();
+    if (window.location.hash === '#speak') speak();
   }
 
   function initMotion(gsap) {

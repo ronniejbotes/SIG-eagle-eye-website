@@ -68,11 +68,11 @@
 .ct-route[data-route='install'].is-active {
   border-color: var(--gold-400);
 }
-.ct-route[data-route='meeting'].is-active {
+.ct-route[data-route='speak'].is-active {
   border-color: var(--royal);
 }
-.ct-route.is-dim {
-  opacity: 0.55;
+.ct-route__btn {
+  margin-top: 12px;
 }
 .ct-direct {
   margin: 34px 0 0;
@@ -169,6 +169,22 @@
 .fx-nav .btn:disabled {
   opacity: 0.6;
   pointer-events: none;
+}
+
+.fx-speak .btn {
+  width: 100%;
+  color: var(--navy);
+  border-color: var(--line-strong);
+}
+.fx-speak .btn:hover {
+  border-color: var(--navy);
+}
+.ct-honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* ---------- Count pickers: little cameras and buildings ---------- */

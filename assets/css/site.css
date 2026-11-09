@@ -803,6 +803,37 @@ h4 {
   color: var(--gold);
   transition: color 300ms var(--ease);
 }
+.brand__text {
+  display: grid;
+  gap: 3px;
+}
+.brand__tm {
+  margin-left: 0.14em;
+  font-family: var(--font-body);
+  font-size: 0.4em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 0;
+  vertical-align: 1.05em;
+}
+.brand__pp {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-72);
+  transition: color 300ms var(--ease);
+}
+.site-header[data-tone='dark'] .brand__pp,
+[data-header='dark'] .site-header:not([data-tone]) .brand__pp,
+.tone-dark .brand__pp,
+.site-footer .brand__pp,
+.site-header.is-open .brand__pp {
+  color: rgba(255, 255, 255, 0.72);
+}
 .site-header[data-tone='dark'] .brand__sig,
 [data-header='dark'] .site-header:not([data-tone]) .brand__sig,
 .tone-dark .brand__sig,
@@ -882,6 +913,107 @@ h4 {
   .menu-toggle {
     display: none !important;
   }
+}
+
+/* Language picker: a native select laid over a small globe button */
+.lang {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-left: auto;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+.lang .icon {
+  width: 20px;
+  height: 20px;
+}
+.lang:hover {
+  background: rgba(127, 127, 127, 0.14);
+}
+.lang:focus-within {
+  outline: 3px solid var(--sky);
+  outline-offset: 2px;
+}
+.lang__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  opacity: 0;
+  font-size: 1rem;
+  color: #0e1322;
+  cursor: pointer;
+}
+.lang--menu {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+}
+.lang__label {
+  font-size: 0.86rem;
+  letter-spacing: 0;
+}
+@media (max-width: 1079px) {
+  .site-header__inner {
+    gap: 8px;
+  }
+  .site-header__inner > .lang ~ .menu-toggle {
+    margin-left: 0;
+  }
+}
+@media (min-width: 1080px) {
+  .site-header__inner > .lang {
+    margin-left: 0;
+  }
+}
+@media (max-width: 359px) {
+  .site-header__inner > .lang {
+    display: none;
+  }
+  .site-header__inner > .lang ~ .menu-toggle {
+    margin-left: auto;
+  }
+}
+
+/* Google Translate brings its own toolbar and tooltips. The picker replaces them. */
+.gt-host {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+body > .skiptranslate,
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+html.is-translated body {
+  top: 0 !important;
+}
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+/* Translated headlines can have much longer words than the English ones. */
+html.is-translated :is(h1, h2, h3, .display) {
+  overflow-wrap: break-word;
+}
+html.is-translated h1 {
+  font-size: clamp(1.9rem, 4.4vw, 3.4rem);
 }
 
 /* Dropdown panels */
@@ -1763,6 +1895,14 @@ img.grade,
 }
 .footer__legal a {
   color: inherit;
+}
+.footer__tm {
+  margin-left: 0.04em;
+  font-family: var(--font-body);
+  font-size: 0.13em;
+  letter-spacing: 0;
+  line-height: 0;
+  vertical-align: 4.2em;
 }
 .footer__word {
   display: block;

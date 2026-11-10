@@ -380,7 +380,7 @@
     if (!form || !SIG.forms) return;
     const card = form.closest('[data-fx-card]') || form;
     const cfg = {
-      price: Number(form.dataset.price) || 100,
+      price: Number(form.dataset.price) || 400,
       endpoint: form.dataset.endpoint,
       email: form.dataset.email,
     };

@@ -69,7 +69,7 @@ The homepage table "The record, industry by industry" (`#the-record`), the "In t
 
 `/contact/` opens with a picker: little camera tiles and site tiles, each with a number field for exact counts. Everyone signs up the same way, whatever the size:
 
-- **Sign up online.** A pretend installation calendar (weekdays, two working days out, six weeks ahead, South African public holidays closed, some days and arrival windows shown as taken), then contact and site details, then a debit order for R100 per camera a month, approved through a simulated DebiCheck request in the customer's banking app. With more than one site, the date and address are for the first site.
+- **Sign up online.** A pretend installation calendar (weekdays, two working days out, six weeks ahead, South African public holidays closed, some days and arrival windows shown as taken), then contact and site details, then a debit order for R400 per camera a month, approved through a simulated DebiCheck request in the customer's banking app. With more than one site, the date and address are for the first site.
 - **Want to speak to us first?** A button in the left-hand column and under every sign-up step (and any link to `/contact/#speak`) leaves the sign-up for a short form about the business, then a call-back calendar: a weekday (from the next working day, three weeks ahead, public holidays closed) and morning (08:00–12:00) or afternoon (12:00–17:00). `api/lead.php` emails this to SIG. The visitor gets no email: their confirmation is on the page. If the send fails, they are offered their own email app instead.
 
 The price is an attribute on the `<form>` in `contact/index.html`: `data-price` (rand per camera a month). The left-hand column of that page and the pricing answers on the home page and `/faq/` repeat it, so change them together. The behaviour lives in `assets/js/pages/contact.js` and the styles in `assets/css/page-contact.css`.
@@ -88,9 +88,9 @@ Upload everything **except** `tools/`, `.git/` and `README.md` to the web root (
 
 - [ ] Confirm the domain and email (currently `https://www.sigeagleeye.co.za` and `info@sigeagleeye.co.za`) and run the `--set-domain` / `--set-email` commands if they differ.
 - [ ] Add the registered company name, registration number and physical address to `/privacy-policy/`, and name the Information Officer.
-- [ ] Confirm the R100 per camera price and whether it includes VAT.
+- [ ] Confirm whether the R400 per camera price includes VAT (Keegan gave it as "roughly R400" on 10 Nov 2026).
 - [ ] Create the info@ mailbox on Hostinger, then send one real "Want to speak to us first?" request and check it arrives. Until the mailbox exists those requests go nowhere.
-- [ ] Before `/contact/` takes real sign-ups: replace the simulated calendar and debit order with real ones (a booking calendar and a DebiCheck provider), and confirm whether R100 per camera a month includes VAT.
+- [ ] Before `/contact/` takes real sign-ups: replace the simulated calendar and debit order with real ones (a booking calendar and a DebiCheck provider), and confirm whether R400 per camera a month includes VAT.
 - [ ] Have the legal copy on `/compliance/`, `/for-employees/` and `/faq/`, and the court case summaries on the homepage and industry pages, checked by the SIG labour law team. It reflects the law as at September 2026 and is written as general information.
 - [ ] Submit `sitemap.xml` in Google Search Console.
 

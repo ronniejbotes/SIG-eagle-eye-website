@@ -67,7 +67,6 @@ function smtp_send(string $host, int $port, string $user, string $password, stri
     $scheme = $port === 465 ? 'ssl' : 'tcp';
     $socket = @stream_socket_client("{$scheme}://{$host}:{$port}", $errno, $errstr, 10, STREAM_CLIENT_CONNECT, $context);
     if ($socket === false) {
-        $GLOBALS['smtp_last_error'] = "connect: {$errno} {$errstr}";
         error_log("[lead.php] SMTP could not connect to {$host}:{$port}: {$errstr}");
         return false;
     }
@@ -88,7 +87,6 @@ function smtp_send(string $host, int $port, string $user, string $password, stri
             return true;
         }
         $first = trim((string) strtok($reply, "\r\n"));
-        $GLOBALS['smtp_last_error'] = "{$label}: " . ($first !== '' ? $first : 'no reply');
         error_log("[lead.php] SMTP {$label} failed: " . ($first !== '' ? $first : 'no reply'));
         return false;
     };
@@ -109,15 +107,4 @@ function smtp_send(string $host, int $port, string $user, string $password, stri
     fwrite($socket, "QUIT\r\n");
     fclose($socket);
     return $sent;
-}
-
-/** TEMPORARY diagnostic: which way the last lead went and whether the file was seen. No secrets. */
-function lead_diag(string $route): void
-{
-    $files = [];
-    foreach (smtp_password_files() as $file) {
-        $files[$file] = is_file($file) ? 'found' : 'missing';
-    }
-    $info = ['at' => gmdate('c'), 'route' => $route, 'smtp_error' => $GLOBALS['smtp_last_error'] ?? null, 'files' => $files];
-    @file_put_contents(dirname(__DIR__) . '/.lead-diag.json', json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }

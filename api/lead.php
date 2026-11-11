@@ -156,12 +156,10 @@ function send_mail(string $subject, string $body, string $replyTo): bool
             'Message-ID: <' . bin2hex(random_bytes(16)) . '@' . substr((string) strrchr(FROM_EMAIL, '@'), 1) . '>',
         ], $body);
         if (smtp_send(SMTP_HOST, SMTP_PORT, FROM_EMAIL, $password, FROM_EMAIL, TO_EMAIL, $message)) {
-            lead_diag('smtp');
             return true;
         }
         error_log('[lead.php] SMTP failed, sending with mail() instead');
     }
-    lead_diag($password === '' ? 'mail (no password found)' : 'mail (smtp failed)');
     $headers = implode("\r\n", [
         'From: ' . FROM_NAME . ' <' . FROM_EMAIL . '>',
         'Reply-To: ' . $replyTo,
@@ -185,7 +183,6 @@ if (!same_site()) {
     reply(403, ['ok' => false, 'error' => 'Not allowed']);
 }
 if (field('company_website', 200) !== '') {
-    lead_diag('honeypot (diagnostic only)'); // TEMPORARY
     reply(200, ['ok' => true]); // honeypot: look successful, send nothing
 }
 

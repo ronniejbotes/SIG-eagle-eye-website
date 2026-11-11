@@ -6,8 +6,9 @@
  * sigeagleeye.com, so it lands in spam. Logging in to smtp.hostinger.com as the mailbox
  * gets the message signed (selector hostingermail-a) and passes SPF, DKIM and DMARC.
  *
- * The mailbox password lives in smtp-password.txt in the folder above public_html, on the
- * server only. Never put it in this repository: the repository is public.
+ * The mailbox password lives in smtp-password.txt next to public_html, or in the hosting
+ * account's top folder, on the server only. Never put it in this repository: the
+ * repository is public.
  *
  * This file only defines functions; .htaccess returns 404 for it anyway.
  * Standard PHP only.
@@ -17,18 +18,28 @@ declare(strict_types=1);
 const SMTP_HOST = 'smtp.hostinger.com';
 const SMTP_PORT = 465;
 
-/** The mailbox password from ../smtp-password.txt, or '' when there isn't one. */
+/**
+ * Where smtp-password.txt may sit, outside every web root: the site's own folder (next to
+ * public_html), then the hosting account's top folder (the one holding domains/).
+ */
+function smtp_password_files(): array
+{
+    $root = rtrim((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
+    if ($root === '') {
+        return [];
+    }
+    return [dirname($root) . '/smtp-password.txt', dirname($root, 3) . '/smtp-password.txt'];
+}
+
+/** The mailbox password from the first smtp-password.txt found, or '' when there isn't one. */
 function smtp_password(): string
 {
-    $root = (string) ($_SERVER['DOCUMENT_ROOT'] ?? '');
-    if ($root === '') {
-        return '';
+    foreach (smtp_password_files() as $file) {
+        if (is_file($file) && is_readable($file)) {
+            return trim((string) file_get_contents($file));
+        }
     }
-    $file = dirname(rtrim($root, '/')) . '/smtp-password.txt';
-    if (!is_file($file) || !is_readable($file)) {
-        return '';
-    }
-    return trim((string) file_get_contents($file));
+    return '';
 }
 
 /**
@@ -100,39 +111,13 @@ function smtp_send(string $host, int $port, string $user, string $password, stri
     return $sent;
 }
 
-/** TEMPORARY diagnostic: records why the last lead went the way it did. No secrets. */
+/** TEMPORARY diagnostic: which way the last lead went and whether the file was seen. No secrets. */
 function lead_diag(string $route): void
 {
-    $root = (string) ($_SERVER['DOCUMENT_ROOT'] ?? '');
-    $file = dirname(rtrim($root, '/')) . '/smtp-password.txt';
-    $info = [
-        'at' => gmdate('c'),
-        'route' => $route,
-        'smtp_error' => $GLOBALS['smtp_last_error'] ?? null,
-        'document_root' => $root,
-        'password_file' => $file,
-        'exists' => @is_file($file),
-        'readable' => @is_readable($file),
-        'size' => @is_file($file) ? @filesize($file) : null,
-        'open_basedir' => (string) ini_get('open_basedir'),
-        'script_dir' => __DIR__,
-        'found' => lead_diag_find(),
-    ];
-    @file_put_contents(dirname(__DIR__) . '/.lead-diag.json', json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-}
-
-/** TEMPORARY: where any smtp-password file sits under the account (names and sizes only). */
-function lead_diag_find(): array
-{
-    $home = dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''), 3);
-    $hits = [];
-    foreach (['/', '/*/', '/*/*/', '/*/*/*/', '/*/*/*/*/'] as $depth) {
-        foreach (glob($home . $depth . '*{[sS][mM][tT][pP],[pP][aA][sS][sS][wW]}*', GLOB_NOSORT | GLOB_BRACE) ?: [] as $path) {
-            $hits[] = $path . ' (' . (is_file($path) ? filesize($path) . ' bytes' : 'folder') . ')';
-        }
+    $files = [];
+    foreach (smtp_password_files() as $file) {
+        $files[$file] = is_file($file) ? 'found' : 'missing';
     }
-    $hits[] = 'site folder: ' . implode(', ', array_diff(scandir(dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''))) ?: [], ['.', '..']));
-    $hits[] = 'home folder: ' . implode(', ', array_diff(scandir($home) ?: [], ['.', '..']));
-    $hits[] = 'domains: ' . implode(', ', array_diff(scandir($home . '/domains') ?: [], ['.', '..']));
-    return array_slice($hits, 0, 60);
+    $info = ['at' => gmdate('c'), 'route' => $route, 'smtp_error' => $GLOBALS['smtp_last_error'] ?? null, 'files' => $files];
+    @file_put_contents(dirname(__DIR__) . '/.lead-diag.json', json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }

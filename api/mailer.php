@@ -56,6 +56,7 @@ function smtp_send(string $host, int $port, string $user, string $password, stri
     $scheme = $port === 465 ? 'ssl' : 'tcp';
     $socket = @stream_socket_client("{$scheme}://{$host}:{$port}", $errno, $errstr, 10, STREAM_CLIENT_CONNECT, $context);
     if ($socket === false) {
+        $GLOBALS['smtp_last_error'] = "connect: {$errno} {$errstr}";
         error_log("[lead.php] SMTP could not connect to {$host}:{$port}: {$errstr}");
         return false;
     }
@@ -76,6 +77,7 @@ function smtp_send(string $host, int $port, string $user, string $password, stri
             return true;
         }
         $first = trim((string) strtok($reply, "\r\n"));
+        $GLOBALS['smtp_last_error'] = "{$label}: " . ($first !== '' ? $first : 'no reply');
         error_log("[lead.php] SMTP {$label} failed: " . ($first !== '' ? $first : 'no reply'));
         return false;
     };
@@ -96,4 +98,24 @@ function smtp_send(string $host, int $port, string $user, string $password, stri
     fwrite($socket, "QUIT\r\n");
     fclose($socket);
     return $sent;
+}
+
+/** TEMPORARY diagnostic: records why the last lead went the way it did. No secrets. */
+function lead_diag(string $route): void
+{
+    $root = (string) ($_SERVER['DOCUMENT_ROOT'] ?? '');
+    $file = dirname(rtrim($root, '/')) . '/smtp-password.txt';
+    $info = [
+        'at' => gmdate('c'),
+        'route' => $route,
+        'smtp_error' => $GLOBALS['smtp_last_error'] ?? null,
+        'document_root' => $root,
+        'password_file' => $file,
+        'exists' => @is_file($file),
+        'readable' => @is_readable($file),
+        'size' => @is_file($file) ? @filesize($file) : null,
+        'open_basedir' => (string) ini_get('open_basedir'),
+        'script_dir' => __DIR__,
+    ];
+    @file_put_contents(dirname(__DIR__) . '/.lead-diag.json', json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }

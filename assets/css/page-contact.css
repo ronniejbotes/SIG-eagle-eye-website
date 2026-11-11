@@ -78,6 +78,9 @@
   margin: 34px 0 0;
   font-weight: 600;
 }
+.ct-direct--next {
+  margin-top: 10px;
+}
 .ct-direct a {
   color: var(--royal-700);
   text-underline-offset: 3px;

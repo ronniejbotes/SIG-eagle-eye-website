@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 ini_set('display_errors', '0');
 
-const TO_EMAIL = 'info@cognexa.co.za';
-const FROM_EMAIL = 'info@cognexa.co.za';
+const TO_EMAIL = 'info@sigeagleeye.com';
+const FROM_EMAIL = 'info@sigeagleeye.com';
 const FROM_NAME = 'SIG Eagle Eye website';
 const MAX_BODY_BYTES = 8192;
 const LIMIT_PER_VISITOR = 5;   // leads per visitor per hour

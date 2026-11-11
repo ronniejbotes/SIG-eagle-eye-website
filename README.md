@@ -15,7 +15,7 @@ It is a plain static site: HTML, CSS and JavaScript with no build step and nothi
 | `/industries/` | Industry hub and risk matrix |
 | `/industries/manufacturing/` and five more | One page per industry, each with its own signature section |
 | `/faq/` | Searchable FAQ |
-| `/contact/` | Lead form: name, email and phone number, emailed to info@cognexa.co.za |
+| `/contact/` | Lead form: name, email and phone number, emailed to info@sigeagleeye.com |
 | `/privacy-policy/` | POPIA privacy notice for the website |
 | `/404.html` | Page-not-found |
 
@@ -69,7 +69,7 @@ The homepage table "The record, industry by industry" (`#the-record`), the "In t
 
 `/contact/` asks for a name, email address and phone number, nothing else. There is no online sign-up or payment: the team calls people back and signs them up by hand. The form is `form[data-lead-form]` in `contact/index.html`; `assets/js/site.js` checks it and posts it to `api/lead.php`. Links such as `/contact/?industry=retail` fill a hidden field so the email says which industry page the visitor came from.
 
-`api/lead.php` emails each lead to info@cognexa.co.za (`TO_EMAIL`, sent from `FROM_EMAIL`), with Reply-To set to the visitor so a reply goes straight to them. It also appends every lead to `../sig-leads/leads-YYYY-MM.log`, the folder next to `public_html`, outside the web root, so a lead survives an email that goes astray. The visitor gets no email: their confirmation is on the page, and if sending fails they are shown the email address instead.
+`api/lead.php` emails each lead to info@sigeagleeye.com (`TO_EMAIL`, sent from `FROM_EMAIL`), with Reply-To set to the visitor so a reply goes straight to them. It also appends every lead to `../sig-leads/leads-YYYY-MM.log`, the folder next to `public_html`, outside the web root, so a lead survives an email that goes astray. The visitor gets no email: their confirmation is on the page, and if sending fails they are shown the email address instead.
 
 Protections in `api/lead.php`: POST only, the request must come from a page on the same site (Origin or Referer), bodies over 8 KB are refused, a hidden honeypot field, strict checks on every field, no visitor text in any mail header except the validated Reply-To, and hourly limits of 5 leads per visitor and 60 overall (counters in the system temp folder). `.htaccess` adds HSTS, a Content-Security-Policy that blocks framing, plugins and off-site form posts, and returns 404 for `tools/`, `.git`, dotfiles, docs and scripts, and anything in `api/` other than `lead.php`.
 
@@ -88,7 +88,7 @@ Upload everything **except** `tools/`, `.git/` and `README.md` to the web root (
 - [ ] Confirm the domain and email (currently `https://www.sigeagleeye.co.za` and `info@sigeagleeye.co.za`) and run the `--set-domain` / `--set-email` commands if they differ.
 - [ ] Add the registered company name, registration number and physical address to `/privacy-policy/`, and name the Information Officer.
 - [ ] Confirm whether the R400 per camera price includes VAT (Keegan gave it as "roughly R400" on 10 Nov 2026).
-- [ ] After each move to a new domain, send one real lead from `/contact/` and check it arrives at info@cognexa.co.za (and not in spam).
+- [ ] After each move to a new domain, send one real lead from `/contact/` and check it arrives at info@sigeagleeye.com (and not in spam).
 - [ ] Confirm whether R400 per camera a month includes VAT.
 - [ ] Have the legal copy on `/compliance/`, `/for-employees/` and `/faq/`, and the court case summaries on the homepage and industry pages, checked by the SIG labour law team. It reflects the law as at September 2026 and is written as general information.
 - [ ] Submit `sitemap.xml` in Google Search Console.

@@ -127,9 +127,12 @@ function lead_diag_find(): array
     $home = dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''), 3);
     $hits = [];
     foreach (['/', '/*/', '/*/*/', '/*/*/*/', '/*/*/*/*/'] as $depth) {
-        foreach (glob($home . $depth . '*smtp*', GLOB_NOSORT) ?: [] as $path) {
+        foreach (glob($home . $depth . '*{[sS][mM][tT][pP],[pP][aA][sS][sS][wW]}*', GLOB_NOSORT | GLOB_BRACE) ?: [] as $path) {
             $hits[] = $path . ' (' . (is_file($path) ? filesize($path) . ' bytes' : 'folder') . ')';
         }
     }
-    return array_slice($hits, 0, 40);
+    $hits[] = 'site folder: ' . implode(', ', array_diff(scandir(dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''))) ?: [], ['.', '..']));
+    $hits[] = 'home folder: ' . implode(', ', array_diff(scandir($home) ?: [], ['.', '..']));
+    $hits[] = 'domains: ' . implode(', ', array_diff(scandir($home . '/domains') ?: [], ['.', '..']));
+    return array_slice($hits, 0, 60);
 }

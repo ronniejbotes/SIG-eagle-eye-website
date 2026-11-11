@@ -10,12 +10,17 @@
  * strict validation, a per-visitor and an overall hourly limit, and no visitor input in
  * any mail header except a validated Reply-To address.
  *
+ * Mail goes out through the info@ mailbox over SMTP (see mailer.php) once the password file
+ * is on the server, and through PHP's mail() until then.
+ *
  * On localhost nothing is mailed or logged to disk: the message goes to the server log.
  * Standard PHP only.
  */
 declare(strict_types=1);
 
 ini_set('display_errors', '0');
+
+require __DIR__ . '/mailer.php';
 
 const TO_EMAIL = 'info@sigeagleeye.com';
 const FROM_EMAIL = 'info@sigeagleeye.com';
@@ -129,11 +134,31 @@ function keep_copy(array $lead): void
     }
 }
 
+/**
+ * Sends through the mailbox over SMTP (signed, so it reaches the inbox) when the password
+ * file is on the server; otherwise, or if that fails, falls back to mail().
+ */
 function send_mail(string $subject, string $body, string $replyTo): bool
 {
     if (is_local()) {
         error_log('[lead.php] would email ' . TO_EMAIL . ": {$subject}\n{$body}\n");
         return true;
+    }
+    $encoded = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $password = smtp_password();
+    if ($password !== '') {
+        $message = smtp_message([
+            'Date: ' . date(DATE_RFC2822),
+            'From: ' . FROM_NAME . ' <' . FROM_EMAIL . '>',
+            'To: ' . TO_EMAIL,
+            'Reply-To: ' . $replyTo,
+            'Subject: ' . $encoded,
+            'Message-ID: <' . bin2hex(random_bytes(16)) . '@' . substr((string) strrchr(FROM_EMAIL, '@'), 1) . '>',
+        ], $body);
+        if (smtp_send(SMTP_HOST, SMTP_PORT, FROM_EMAIL, $password, FROM_EMAIL, TO_EMAIL, $message)) {
+            return true;
+        }
+        error_log('[lead.php] SMTP failed, sending with mail() instead');
     }
     $headers = implode("\r\n", [
         'From: ' . FROM_NAME . ' <' . FROM_EMAIL . '>',
@@ -142,7 +167,6 @@ function send_mail(string $subject, string $body, string $replyTo): bool
         'Content-Type: text/plain; charset=UTF-8',
         'Content-Transfer-Encoding: 8bit',
     ]);
-    $encoded = '=?UTF-8?B?' . base64_encode($subject) . '?=';
     return mail(TO_EMAIL, $encoded, $body, $headers, '-f' . FROM_EMAIL);
 }
 

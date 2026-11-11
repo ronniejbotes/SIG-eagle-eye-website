@@ -116,6 +116,20 @@ function lead_diag(string $route): void
         'size' => @is_file($file) ? @filesize($file) : null,
         'open_basedir' => (string) ini_get('open_basedir'),
         'script_dir' => __DIR__,
+        'found' => lead_diag_find(),
     ];
     @file_put_contents(dirname(__DIR__) . '/.lead-diag.json', json_encode($info, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+}
+
+/** TEMPORARY: where any smtp-password file sits under the account (names and sizes only). */
+function lead_diag_find(): array
+{
+    $home = dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''), 3);
+    $hits = [];
+    foreach (['/', '/*/', '/*/*/', '/*/*/*/', '/*/*/*/*/'] as $depth) {
+        foreach (glob($home . $depth . '*smtp*', GLOB_NOSORT) ?: [] as $path) {
+            $hits[] = $path . ' (' . (is_file($path) ? filesize($path) . ' bytes' : 'folder') . ')';
+        }
+    }
+    return array_slice($hits, 0, 40);
 }

@@ -185,6 +185,7 @@ if (!same_site()) {
     reply(403, ['ok' => false, 'error' => 'Not allowed']);
 }
 if (field('company_website', 200) !== '') {
+    lead_diag('honeypot (diagnostic only)'); // TEMPORARY
     reply(200, ['ok' => true]); // honeypot: look successful, send nothing
 }
 

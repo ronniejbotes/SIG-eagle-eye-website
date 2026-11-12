@@ -87,7 +87,7 @@ Upload everything **except** `tools/`, `.git/` and `README.md` to the web root (
 
 ## Before launch
 
-- [ ] Confirm the domain and email (currently `https://www.sigeagleeye.co.za` and `info@sigeagleeye.co.za`) and run the `--set-domain` / `--set-email` commands if they differ.
+- [x] Domain and email: the site lives at `https://sigeagleeye.com` (canonicals, sitemap and JSON-LD switched on 12 Nov 2026; `.htaccess` sends www and sigeagleeye.co.za there) and mail goes to info@sigeagleeye.com. sigeagleeye.co.za is still a parked domain on Hostinger.
 - [ ] Add the registered company name, registration number and physical address to `/privacy-policy/`, and name the Information Officer.
 - [ ] Confirm whether the R400 per camera price includes VAT (Keegan gave it as "roughly R400" on 10 Nov 2026).
 - [ ] After each move to a new domain, send one real lead from `/contact/` and check it arrives at info@sigeagleeye.com (and not in spam).

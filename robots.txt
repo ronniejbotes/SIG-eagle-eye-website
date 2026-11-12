@@ -3,4 +3,4 @@ Allow: /
 Disallow: /tools/
 Disallow: /api/
 
-Sitemap: https://www.sigeagleeye.co.za/sitemap.xml
+Sitemap: https://sigeagleeye.com/sitemap.xml

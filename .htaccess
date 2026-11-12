@@ -12,16 +12,17 @@ AddType application/manifest+json .webmanifest
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # One address for the whole site: https://sigeagleeye.com, to match the canonical
+  # URLs and the sitemap. www, and sigeagleeye.co.za if it is ever pointed here,
+  # redirect to it. This comes before the HTTPS rule so that http://www. reaches
+  # https://sigeagleeye.com in one hop, not two.
+  RewriteCond %{HTTP_HOST} ^(www\.sigeagleeye\.com|(www\.)?sigeagleeye\.co\.za)$ [NC]
+  RewriteRule ^ https://sigeagleeye.com%{REQUEST_URI} [L,R=301]
+
   # Always serve the site over HTTPS.
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-  # One address for the whole site: https://sigeagleeye.com, to match the canonical
-  # URLs and the sitemap. www, and sigeagleeye.co.za if it is ever pointed here,
-  # redirect to it.
-  RewriteCond %{HTTP_HOST} ^(www\.sigeagleeye\.com|(www\.)?sigeagleeye\.co\.za)$ [NC]
-  RewriteRule ^ https://sigeagleeye.com%{REQUEST_URI} [L,R=301]
 
   # Maintenance files are not part of the website: the build tools, git data, any
   # dotfile (except .well-known, which certificates need), docs, scripts and logs.

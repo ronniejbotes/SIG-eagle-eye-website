@@ -1,0 +1,26 @@
+# SIG Eagle Eye
+
+> AI-powered behavioural analytics for South African employers. Behavioural analytics watch the zones and rules configured for your site and flag behaviour worth a second look; a person reviews every flag, and management decides what happens next.
+
+## Main pages
+
+- [Home](https://sigeagleeye.com/)
+- [How it works](https://sigeagleeye.com/how-it-works/)
+- [Legal and ethical compliance](https://sigeagleeye.com/compliance/)
+- [For employees](https://sigeagleeye.com/for-employees/)
+- [FAQ](https://sigeagleeye.com/faq/)
+- [Get started](https://sigeagleeye.com/contact/)
+
+## Industries
+
+- [All industries](https://sigeagleeye.com/industries/)
+- [Manufacturing](https://sigeagleeye.com/industries/manufacturing/)
+- [Logistics and fleet](https://sigeagleeye.com/industries/logistics-fleet/)
+- [Mining and earthmoving](https://sigeagleeye.com/industries/mining-earthmoving/)
+- [Healthcare facilities](https://sigeagleeye.com/industries/healthcare/)
+- [Retail and warehousing](https://sigeagleeye.com/industries/retail-warehousing/)
+- [Security operations](https://sigeagleeye.com/industries/security-operations/)
+
+## Other
+
+- [Privacy policy](https://sigeagleeye.com/privacy-policy/)

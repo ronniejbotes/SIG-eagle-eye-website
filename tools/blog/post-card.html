@@ -1,0 +1,17 @@
+<!--
+  One card per post on /blog/, inside <ul class="blog-list" role="list">, newest first.
+  Fill the {{FIELDS}} as in post-template.html; {{EXCERPT}} is the meta description or a
+  sentence from the post's opening, word for word. {{CARD_IMG}} is the lead image (or an
+  800 px copy of it) with its own width and height.
+-->
+<li class="post-card">
+  <a class="post-card__link" href="/blog/{{SLUG}}/">
+    <img class="post-card__img" src="{{CARD_IMG}}" width="{{CARD_W}}" height="{{CARD_H}}" alt="" loading="lazy">
+    <div class="post-card__body">
+      <p class="post-card__meta mono"><time datetime="{{DATE}}">{{DATE_LONG}}</time> &middot; {{TOPIC}}</p>
+      <h3 class="post-card__title">{{H1}}</h3>
+      <p class="post-card__excerpt">{{EXCERPT}}</p>
+      <span class="link-arrow">Read the article <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></span>
+    </div>
+  </a>
+</li>

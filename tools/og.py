@@ -42,6 +42,7 @@ CARDS = [
     ("og-faq.jpg", "wh-panorama-2400.webp", (0.62, 0.5), 1.0, False, "Frequently asked questions", "Ask us anything.", "Straight answers."),
     ("og-contact.jpg", "site-assessment-walk-2000.webp", (0.5, 0.45), 1.0, True, "Book a site assessment", "Show us your site.", "We'll walk it with you."),
     ("og-privacy-policy.jpg", None, (0.5, 0.5), 1.0, False, "Privacy policy", "Your information,", "handled the way we'd advise."),
+    ("og-blog.jpg", None, (0.5, 0.5), 1.0, False, "Blog for employers", "Questions from the floor,", "answered with sources."),
 ]
 
 

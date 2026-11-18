@@ -15,6 +15,7 @@ It is a plain static site: HTML, CSS and JavaScript with no build step and nothi
 | `/industries/` | Industry hub and risk matrix |
 | `/industries/manufacturing/` and five more | One page per industry, each with its own signature section |
 | `/faq/` | Searchable FAQ |
+| `/blog/` | Articles for employers, and one folder per post (`/blog/<slug>/`) |
 | `/contact/` | Lead form: name, email and phone number, emailed to info@sigeagleeye.com |
 | `/privacy-policy/` | POPIA privacy notice for the website |
 | `/404.html` | Page-not-found |
@@ -76,6 +77,20 @@ The homepage table "The record, industry by industry" (`#the-record`), the "In t
 Protections in `api/lead.php`: POST only, the request must come from a page on the same site (Origin or Referer), bodies over 8 KB are refused, a hidden honeypot field, strict checks on every field, no visitor text in any mail header except the validated Reply-To, and hourly limits of 5 leads per visitor and 60 overall (counters in the system temp folder). `.htaccess` adds HSTS, a Content-Security-Policy that blocks framing, plugins and off-site form posts, and returns 404 for `tools/`, `.git`, dotfiles, docs and scripts, and anything in `api/` other than `lead.php` (including `mailer.php`).
 
 The price, R400 per camera a month, appears in the left-hand column of `/contact/` and the pricing answers on the home page and `/faq/`, so change them together.
+
+## Blog
+
+`/blog/` lists the articles, newest first; each post is `blog/<slug>/index.html`. Until the first post is published, the index shows a short "Nothing published yet" block (`[data-blog-empty]`) that points to the FAQ and the main pages. Styles for both are in `assets/css/page-blog.css`. The footer links to the blog from every page.
+
+To publish a post:
+
+1. Copy `tools/blog/post-template.html` to `blog/<slug>/index.html`, fill every `{{FIELD}}` (the list is at the top of the template) and delete the template's opening comment. The text goes in exactly as it was checked.
+2. Images go in `assets/img/blog/` as WebP (lead image about 1600 px wide), with `width`, `height` and honest alt text. Never box, label or frame a person.
+3. On `/blog/`, the first time: replace the whole `.blog-empty` block with `<ul class="blog-list" role="list">`. Then add the post's card from `tools/blog/post-card.html` at the top of that list.
+4. Add one line for the post under "Main pages" in `llms.txt`, and a link to it from the one page it supports (a link on existing words, or a new item in an existing list of links).
+5. Run `python3 tools/sync.py` (header, footer, `?v=` hashes and `sitemap.xml` pick the post up), check the post at 390 px and 1440 px, then commit and push `main`.
+
+The author is always the business, SIG Eagle Eye: the visible byline and the `BlogPosting` `author` in the JSON-LD, never a person. Legal points cite the Act, Code of Good Practice or judgment they rely on, in the post and in its Sources list. A case is described by the employer and the forum only, never by an employee's or any other individual's name. Nothing about SIG Eagle Eye goes in a post that the site doesn't already say.
 
 ## Languages
 

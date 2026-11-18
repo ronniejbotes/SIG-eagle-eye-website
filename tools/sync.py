@@ -175,7 +175,7 @@ def write_sitemap(cfg):
     rows = []
     for path in pages():
         url = url_path(path)
-        if url in NOT_IN_SITEMAP:
+        if url in NOT_IN_SITEMAP or re.fullmatch(r"/google[0-9a-f]+\.html", url):
             continue
         html = path.read_text(encoding="utf-8")
         if re.search(r'<meta name="robots" content="[^"]*noindex', html):

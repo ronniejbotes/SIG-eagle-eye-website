@@ -1,0 +1,162 @@
+<!doctype html>
+<!--
+  SIG Eagle Eye blog post template. Copy to blog/<slug>/index.html, fill every {{FIELD}},
+  delete this comment, then run: python3 tools/sync.py
+  The full steps are under "Blog" in README.md.
+
+  {{SLUG}}            lower-case-with-hyphens, also the folder name
+  {{TITLE}}           the SEO title, 60 characters or fewer including " | SIG Eagle Eye"
+  {{H1}}              the headline on the page (may match the title without the brand)
+  {{CRUMB}}           a short name for the breadcrumb (three to six words)
+  {{DESCRIPTION}}     the meta description, 155 characters or fewer
+  {{TOPIC}}           eyebrow above the headline, e.g. "What it doesn't do", "Manufacturing", "Changes in the law"
+  {{DATE}}            publication date, YYYY-MM-DD (the day it goes live, never backdated)
+  {{DATE_LONG}}       the same date written out, e.g. 25 November 2026
+  {{LEAD_IMG}}        lead image path under /assets/img/blog/, WebP about 1600 px wide
+  {{LEAD_W}} {{LEAD_H}}  its pixel size
+  {{LEAD_ALT}}        what is actually in the picture
+  {{LEAD_CAPTION}}    a short caption, or delete the <figcaption>
+  {{BODY}}            the checked text, word for word: <p>, <h2>, <h3>, <ul>, <ol>, <blockquote>,
+                      <figure class="post-figure"> for inline images (loading="lazy", width and height set),
+                      <div class="table-wrap"><table> for tables
+  {{SOURCES}}         one <li> per source: <a href="URL">Name of the Act, Code or judgment</a>, read DATE_LONG
+  {{SUPPORT_URL}} {{SUPPORT_LABEL}}  the one site page this post supports, e.g. /how-it-works/ and "See how it works"
+
+  Rules: the business is the author (never a person); no em dashes; South African English;
+  never box, label or frame a person in an image; nothing about SIG Eagle Eye that the site
+  does not already say; no employee's or individual's name from a case.
+-->
+<html lang="en-ZA" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <link rel="canonical" href="https://sigeagleeye.com/blog/{{SLUG}}/">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="en_ZA">
+  <meta property="og:site_name" content="SIG Eagle Eye">
+  <meta property="og:title" content="{{H1}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:url" content="https://sigeagleeye.com/blog/{{SLUG}}/">
+  <meta property="og:image" content="https://sigeagleeye.com{{LEAD_IMG}}">
+  <meta property="article:published_time" content="{{DATE}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- @include head -->
+  <!-- /@include head -->
+  <link rel="preload" as="image" href="{{LEAD_IMG}}" fetchpriority="high">
+  <link rel="stylesheet" href="/assets/css/inner.css">
+  <link rel="stylesheet" href="/assets/css/page-blog.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": "https://sigeagleeye.com/blog/{{SLUG}}/#article",
+        "headline": "{{H1}}",
+        "description": "{{DESCRIPTION}}",
+        "image": "https://sigeagleeye.com{{LEAD_IMG}}",
+        "datePublished": "{{DATE}}",
+        "dateModified": "{{DATE}}",
+        "inLanguage": "en-ZA",
+        "url": "https://sigeagleeye.com/blog/{{SLUG}}/",
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://sigeagleeye.com/blog/{{SLUG}}/" },
+        "isPartOf": { "@id": "https://sigeagleeye.com/blog/#blog" },
+        "author": { "@type": "Organization", "@id": "https://sigeagleeye.com/#organization", "name": "SIG Eagle Eye", "url": "https://sigeagleeye.com/" },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://sigeagleeye.com/#organization",
+          "name": "SIG Eagle Eye",
+          "url": "https://sigeagleeye.com/",
+          "logo": { "@type": "ImageObject", "url": "https://sigeagleeye.com/assets/img/brand/logo-square-512.png" }
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sigeagleeye.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sigeagleeye.com/blog/" },
+          { "@type": "ListItem", "position": 3, "name": "{{CRUMB}}", "item": "https://sigeagleeye.com/blog/{{SLUG}}/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="page-blog page-post" data-header="light">
+  <!-- @include header -->
+  <!-- /@include header -->
+
+  <main id="main" class="main" tabindex="-1">
+    <article class="post" aria-labelledby="page-title">
+      <header class="ph ph--light tone-glass post-hero">
+        <div class="container">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog/">Blog</a></li>
+              <li><span aria-current="page">{{CRUMB}}</span></li>
+            </ol>
+          </nav>
+          <p class="eyebrow">{{TOPIC}}</p>
+          <h1 class="h1 ph__title" id="page-title">{{H1}}</h1>
+          <p class="post-meta mono"><span class="post-meta__by">By SIG Eagle Eye</span><time datetime="{{DATE}}">{{DATE_LONG}}</time></p>
+        </div>
+      </header>
+
+      <div class="section tone-paper post-body">
+        <div class="container">
+          <figure class="post-lead">
+            <img src="{{LEAD_IMG}}" width="{{LEAD_W}}" height="{{LEAD_H}}" alt="{{LEAD_ALT}}" loading="eager" fetchpriority="high">
+            <figcaption>{{LEAD_CAPTION}}</figcaption>
+          </figure>
+
+          <div class="prose post-prose">
+{{BODY}}
+          </div>
+
+          <aside class="post-sources" aria-labelledby="sources-title">
+            <h2 class="post-sources__title" id="sources-title">Sources</h2>
+            <ol>
+{{SOURCES}}
+            </ol>
+          </aside>
+
+          <p class="post-note">General information for South African employers, not legal advice on your situation. Published {{DATE_LONG}}.</p>
+
+          <nav class="post-next" aria-label="Next">
+            <a class="link-arrow" href="{{SUPPORT_URL}}">{{SUPPORT_LABEL}} <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="/blog/">All articles <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+          </nav>
+        </div>
+      </div>
+    </article>
+
+    <section class="band-cta tone-dark" aria-labelledby="cta-title">
+      <div class="glow glow--gold" style="width:520px;height:520px;right:-140px;top:-160px" aria-hidden="true"></div>
+      <div class="container band-cta__grid">
+        <div>
+          <p class="eyebrow">Get started</p>
+          <h2 class="h2" id="cta-title">A question about <span class="serif">your own site?</span></h2>
+          <p class="lede">Leave your details and we'll call you. Ask us anything about your floor, your rules and your people.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn--gold" href="/contact/">Get started <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <!-- /@include footer -->
+
+  <script src="/assets/js/vendor/gsap.min.js" defer></script>
+  <script src="/assets/js/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="/assets/js/vendor/SplitText.min.js" defer></script>
+  <script src="/assets/js/vendor/lenis.min.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/motion.js" defer></script>
+</body>
+</html>

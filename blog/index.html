@@ -50,7 +50,10 @@
         "name": "SIG Eagle Eye blog",
         "url": "https://sigeagleeye.com/blog/",
         "inLanguage": "en-ZA",
-        "publisher": { "@type": "Organization", "@id": "https://sigeagleeye.com/#organization", "name": "SIG Eagle Eye", "url": "https://sigeagleeye.com/" }
+        "publisher": { "@type": "Organization", "@id": "https://sigeagleeye.com/#organization", "name": "SIG Eagle Eye", "url": "https://sigeagleeye.com/" },
+        "blogPost": [
+          { "@type": "BlogPosting", "@id": "https://sigeagleeye.com/blog/what-is-video-analytics-in-cctv/#article", "headline": "What is video analytics in CCTV, and who decides what a flag means?", "url": "https://sigeagleeye.com/blog/what-is-video-analytics-in-cctv/", "datePublished": "2026-11-25" }
+        ]
       },
       {
         "@type": "BreadcrumbList",
@@ -199,23 +202,21 @@
           <h2 class="h2 section-head__title" id="latest-title">Latest <span class="serif">articles.</span></h2>
         </div>
 
-        <!-- Posts, newest first. When the first post is published, replace the whole
-             .blog-empty block with <ul class="blog-list" role="list"> and one card per post
-             (card markup: tools/blog/post-card.html). See "Blog" in README.md. -->
-        <div class="blog-empty" data-blog-empty>
-          <div>
-            <h3 class="blog-empty__title">Nothing published yet.</h3>
-            <p>The first article goes up once it has been checked line by line against the sources it cites and read through for plain language. We would rather publish later than publish a legal point we can't back up.</p>
-            <p>Until then, these pages already answer the questions employers ask us most.</p>
-          </div>
-          <ul class="blog-links" role="list">
-            <li><a href="/faq/"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-search"/></svg></span><span class="blog-links__text"><span class="blog-links__title">Frequently asked questions</span><span class="blog-links__desc">What employers ask in the first meeting, and what their employees ask after it</span></span></a></li>
-            <li><a href="/how-it-works/"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-target"/></svg></span><span class="blog-links__text"><span class="blog-links__title">How it works</span><span class="blog-links__desc">The five stages, from camera feed to a reviewed record</span></span></a></li>
-            <li><a href="/compliance/"><span class="icon-tile icon-tile--gold"><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-scales"/></svg></span><span class="blog-links__text"><span class="blog-links__title">Legal &amp; ethical compliance</span><span class="blog-links__desc">LRA, the Dismissal Code, BCEA, OHSA, POPIA</span></span></a></li>
-            <li><a href="/for-employees/"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-users"/></svg></span><span class="blog-links__text"><span class="blog-links__title">For employees</span><span class="blog-links__desc">What it means for your team, in plain language</span></span></a></li>
-            <li><a href="/industries/"><span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-layers"/></svg></span><span class="blog-links__text"><span class="blog-links__title">Industries</span><span class="blog-links__desc">One method, six very different workplaces</span></span></a></li>
-          </ul>
-        </div>
+        <!-- Posts, newest first: one card per post (card markup: tools/blog/post-card.html).
+             See "Blog" in README.md. -->
+        <ul class="blog-list" role="list">
+          <li class="post-card">
+            <a class="post-card__link" href="/blog/what-is-video-analytics-in-cctv/">
+              <img class="post-card__img" src="/assets/img/review-desk-800.webp" width="800" height="531" alt="" loading="lazy">
+              <div class="post-card__body">
+                <p class="post-card__meta mono"><time datetime="2026-11-25">25 November 2026</time> &middot; How it works</p>
+                <h3 class="post-card__title">What is video analytics in CCTV, and who decides what a flag means?</h3>
+                <p class="post-card__excerpt">Video analytics is software that reads camera footage and flags events. What it can and can't tell an employer, and why a person should review every flag.</p>
+                <span class="link-arrow">Read the article <svg class="icon" aria-hidden="true"><use href="/assets/icons/sprite.svg#i-arrow-right"/></svg></span>
+              </div>
+            </a>
+          </li>
+        </ul>
       </div>
     </section>
 
